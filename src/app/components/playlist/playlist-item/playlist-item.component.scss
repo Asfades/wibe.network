@@ -1,0 +1,10 @@
+.playlist-item {
+  border-bottom: 1px solid #aaa;
+  padding: 0 20px;
+  line-height: 2rem;
+  cursor: pointer;
+
+  &.active {
+    background: #eee;
+  }
+}

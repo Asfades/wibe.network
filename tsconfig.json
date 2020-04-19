@@ -2,6 +2,13 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      "@src/*": ["src/*"],
+      "@entities/*": ["src/app/entities/*"],
+      "@player/*": ["src/app/components/player/*"],
+      "@playlist/*": ["src/app/components/playlist/*"],
+      "@store/*": ["src/app/store/*"]
+    },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,

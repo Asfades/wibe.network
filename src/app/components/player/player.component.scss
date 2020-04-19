@@ -1,0 +1,36 @@
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: #ccc;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #aaa;
+
+  &__controls {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1240px;
+    width: 100%;
+    height: 50px;
+    margin: 0 10px;
+  }
+
+  &__buttons-panel {
+    display: flex;
+    height: 100%;
+  }
+
+  &__time-slider {
+    width: 100%;
+
+    &-container {
+      width: 100%;
+      min-width: 200px;
+      display: flex;
+      align-items: center;
+    }
+  }
+}

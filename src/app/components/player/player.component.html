@@ -1,0 +1,50 @@
+<div class="player">
+  <div class="player__controls">
+    <div class="player__buttons-panel">
+      <button
+        mat-button
+        (click)="previous()"
+        [disabled]="!(player | async).isPrevPresent"
+      >
+        <mat-icon mat-list-icon>skip_previous</mat-icon>
+      </button>
+      <button
+        mat-button
+        [disabled]="!(player | async).filePath"
+        (click)="play()"
+        *ngIf="!(player | async).isPlaying"
+      >
+        <mat-icon mat-list-icon>play_arrow</mat-icon>
+      </button>
+      <button
+        mat-button
+        (click)="pause()"
+        *ngIf="(player | async).isPlaying"
+      >
+        <mat-icon mat-list-icon>pause</mat-icon>
+      </button>
+      <button
+        mat-button
+        [disabled]="!(player | async).isNextPresent"
+        (click)="next()"
+      >
+        <mat-icon mat-list-icon>skip_next</mat-icon>
+      </button>
+    </div>
+    <div class="player__time-slider-container">
+      <span>{{ formatTime((player | async).currentTime) }}</span>
+      <mat-slider
+        class="player__time-slider"
+        min="0"
+        [max]="(player | async).duration"
+        step="1"
+        [value]="(player | async).currentTime"
+        (input)="onSliderChange($event)"
+        (mouseup)="onSliderChangeEnd()"
+        [disabled]="!(player | async).currentTime"
+      >
+      </mat-slider>
+      <span>{{ formatTime((player | async).duration) }}</span>
+    </div>
+  </div>
+</div>
