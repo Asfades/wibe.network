@@ -1,4 +1,5 @@
 <div class="playlist-container">
+  <p class="name">Demo Playlist</p>
   <app-playlist-item
     *ngFor="let track of (playlist | async).tracks; let i = index"
     (click)="chooseTrack(i)"
