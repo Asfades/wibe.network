@@ -11,7 +11,7 @@ export class VisualiserComponent implements OnInit, OnDestroy {
   @ViewChild('visualisationCanvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
   private animationId: number;
-  contextSizes: {
+  private contextSizes: {
     width: number;
     height: number;
   };
