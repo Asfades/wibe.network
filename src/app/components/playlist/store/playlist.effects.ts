@@ -8,13 +8,15 @@ import * as playlistActions from './playlist.actions';
 import * as playerActions from '@player/store/player.actions';
 import * as fromApp from '@store/app.reducer';
 import { PlayerService } from '@player/player.service';
+import { AudioService } from '@services/audio.service';
 
 @Injectable()
 export class PlaylistEffects {
   constructor(
     private actions$: Actions,
     private store: Store<fromApp.AppState>,
-    private playerService: PlayerService
+    private playerService: PlayerService,
+    private audioService: AudioService
   ) {}
 
   @Effect()
@@ -28,6 +30,7 @@ export class PlaylistEffects {
         const actionsToDispatch: Action[] = [];
         if (track) {
           this.playerService.setTrack(track.filePath);
+          // this.audioService.setTrack(track.filePath);
           actionsToDispatch.push(new playerActions.SetTrack(track));
         }
         if (nextAvailable) {

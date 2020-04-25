@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StoreModule } from '@ngrx/store';
@@ -17,6 +18,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { PlaylistComponent } from '@playlist/playlist.component';
 import { PlaylistItemComponent } from '@playlist/playlist-item/playlist-item.component';
 import { PlaylistEffects } from '@playlist/store/playlist.effects';
+import { VisualiserComponent } from './components/visualiser/visualiser.component';
 
 @NgModule({
   declarations: [
@@ -24,10 +26,12 @@ import { PlaylistEffects } from '@playlist/store/playlist.effects';
     PlayerComponent,
     HeaderComponent,
     PlaylistComponent,
-    PlaylistItemComponent
+    PlaylistItemComponent,
+    VisualiserComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,

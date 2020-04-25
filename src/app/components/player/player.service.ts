@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
 
 import * as fromApp from '@store/app.reducer';
 import * as playlistActions from '@playlist/store/playlist.actions';
@@ -10,7 +11,7 @@ import * as playerActions from './store/player.actions';
 })
 export class PlayerService {
   private audioObj = new Audio();
-  player = null;
+  audio$: Subject<HTMLAudioElement> = new Subject();
 
   constructor(
     private store: Store<fromApp.AppState>
@@ -25,6 +26,7 @@ export class PlayerService {
 
       this.audioObj.onloadeddata = () => {
         this.store.dispatch(new playerActions.SetDuration(Math.floor(this.audioObj.duration)));
+        this.audio$.next(this.audioObj);
         this.play();
       };
 

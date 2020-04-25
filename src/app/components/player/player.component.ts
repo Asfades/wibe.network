@@ -4,9 +4,10 @@ import { Observable, Subscription } from 'rxjs';
 
 import * as moment from 'moment';
 
-import * as fromApp from '../../store/app.reducer';
+import * as fromApp from '@store/app.reducer';
 import * as fromPlayer from './store/player.reducer';
 import { PlayerService } from './player.service';
+import { AudioService } from '@services/audio.service';
 
 @Component({
   selector: 'app-player',
@@ -20,7 +21,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private playerService: PlayerService
+    private playerService: PlayerService,
+    private audioService: AudioService
   ) { }
 
   ngOnInit(): void {
@@ -29,10 +31,12 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   play() {
     this.playerService.play();
+    // this.audioService.play();
   }
 
   pause() {
     this.playerService.pause();
+    // this.audioService.pause();
   }
 
   previous() {
