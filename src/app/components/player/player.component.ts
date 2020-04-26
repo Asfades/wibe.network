@@ -31,12 +31,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   play() {
     this.playerService.play();
-    // this.audioService.play();
   }
 
   pause() {
     this.playerService.pause();
-    // this.audioService.pause();
   }
 
   previous() {
