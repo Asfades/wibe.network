@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
@@ -13,8 +13,10 @@ import { PlayerService } from './player.service';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit {
+export class PlayerComponent implements OnInit, OnDestroy {
   private sliderChangeVal: number;
+  private isPlaying = null;
+  private playerSub: Subscription;
   player: Observable<fromPlayer.State>;
 
   constructor(
@@ -24,6 +26,9 @@ export class PlayerComponent implements OnInit {
 
   ngOnInit(): void {
     this.player = this.store.select('player');
+    this.playerSub = this.player.subscribe((state) => {
+      this.isPlaying = state.isPlaying;
+    });
   }
 
   play() {
@@ -55,5 +60,16 @@ export class PlayerComponent implements OnInit {
   formatTime(time: number, format: string = 'm:ss') {
     const momentTime = time * 1000;
     return moment.utc(momentTime).format(format);
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.code === 'Space' && typeof(this.isPlaying) === 'boolean') {
+      this.isPlaying ? this.pause() : this.play();
+    }
+  }
+
+  ngOnDestroy() {
+    this.playerSub.unsubscribe();
   }
 }
