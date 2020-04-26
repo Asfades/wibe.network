@@ -13,10 +13,9 @@ import { PlayerService } from './player.service';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit, OnDestroy {
-  private playerSub: Subscription;
+export class PlayerComponent implements OnInit {
+  private sliderChangeVal: number;
   player: Observable<fromPlayer.State>;
-  sliderChange: number;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -44,21 +43,17 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   onSliderChange(event) {
-    this.sliderChange = event.value;
+    this.sliderChangeVal = event.value;
   }
 
   onSliderChangeEnd() {
-    if (this.sliderChange) {
-      this.playerService.changeCurrentTime(this.sliderChange);
+    if (this.sliderChangeVal) {
+      this.playerService.changeCurrentTime(this.sliderChangeVal);
     }
   }
 
   formatTime(time: number, format: string = 'm:ss') {
     const momentTime = time * 1000;
     return moment.utc(momentTime).format(format);
-  }
-
-  ngOnDestroy() {
-    this.playerSub.unsubscribe();
   }
 }
