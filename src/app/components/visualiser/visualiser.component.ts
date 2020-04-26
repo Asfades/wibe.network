@@ -28,6 +28,7 @@ export class VisualiserComponent implements OnInit, OnDestroy {
       height: this.canvas.nativeElement.height
     };
     this.ctx.fillStyle = '#ffffff';
+    this.ctx.strokeStyle = '#ffffff';
     this.audioService.amplitudeArray$.subscribe((amplitudeArray: Uint8Array) => {
       this.ngZone.runOutsideAngular(() => {
         this.clearCanvas();
@@ -38,9 +39,23 @@ export class VisualiserComponent implements OnInit, OnDestroy {
 
   drawAmplitude(amplitudeArray: Uint8Array) {
     return () => {
+      this.ctx.beginPath();
+      for (let i = 0; i < amplitudeArray.length; i = i + 4) {
+        this.ctx.lineTo(i, this.getVertical(amplitudeArray[i]));
+      }
+      this.ctx.stroke();
+      this.ctx.closePath();
+    };
+  }
+
+  private getVertical(amplitude: number) {
+    return this.contextSizes.height - amplitude - 1;
+  }
+
+  drawPixels(amplitudeArray: Uint8Array) {
+    return () => {
       for (let i = 0; i < amplitudeArray.length; i++) {
-        const value = amplitudeArray[i] / 256;
-        const y = this.contextSizes.height - (this.contextSizes.height * value) - 1;
+        const y = this.getVertical(amplitudeArray[i]);
         this.ctx.fillRect(i, y, 1, 1);
       }
     };
