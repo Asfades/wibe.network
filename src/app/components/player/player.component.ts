@@ -21,8 +21,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private playerService: PlayerService,
-    private audioService: AudioService
+    private playerService: PlayerService
   ) { }
 
   ngOnInit(): void {
