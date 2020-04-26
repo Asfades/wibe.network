@@ -7,7 +7,6 @@ import * as moment from 'moment';
 import * as fromApp from '@store/app.reducer';
 import * as fromPlayer from './store/player.reducer';
 import { PlayerService } from './player.service';
-import { AudioService } from '@services/audio.service';
 
 @Component({
   selector: 'app-player',
