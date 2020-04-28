@@ -32,9 +32,22 @@ export class VisualiserComponent implements OnInit, OnDestroy {
     this.audioService.amplitudeArray$.subscribe((amplitudeArray: Uint8Array) => {
       this.ngZone.runOutsideAngular(() => {
         this.clearCanvas();
-        this.animationId = requestAnimationFrame(this.drawAmplitude(amplitudeArray));
+        this.animationId = requestAnimationFrame(this.drawRainbow(amplitudeArray));
       });
     });
+  }
+
+  drawRainbow(amplitudeArray: Uint8Array) {
+    return () => {
+      for (let i = 0; i < amplitudeArray.length - 4; i = i + 4) {
+        this.ctx.strokeStyle = `hsl(${i / 4}, 50%, 50%)`;
+        this.ctx.beginPath();
+        this.ctx.moveTo(i, this.getVertical(amplitudeArray[i]));
+        this.ctx.lineTo(i + 4, this.getVertical(amplitudeArray[i + 4]));
+        this.ctx.stroke();
+      }
+      // this.ctx.closePath();
+    };
   }
 
   drawAmplitude(amplitudeArray: Uint8Array) {
