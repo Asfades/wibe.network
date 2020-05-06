@@ -1,3 +1,22 @@
 <header>
-  
+  <nav>
+    <div></div>
+    <div>
+      <button
+        mat-button
+        routerLink="/auth"
+        *ngIf="!isAuthenticated"
+      >Authenticate</button>
+      <button
+        mat-button
+        (click)="fetchData()"
+        *ngIf="isAuthenticated"
+      >Fetch Data</button>
+      <button
+        mat-button
+        (click)="logout()"
+        *ngIf="isAuthenticated"
+      >Logout</button>
+    </div>
+  </nav>
 </header>

@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  justify-content: center;
+  margin: 40px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 15px;
+
+    span {
+      // font-weight: bold;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    width: 50%;
+  }
+}

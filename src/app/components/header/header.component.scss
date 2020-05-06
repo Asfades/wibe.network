@@ -6,3 +6,22 @@ header {
   height: 50px;
   background: #3A546E;
 }
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1240px;
+  width: 100%;
+  height: 100%;
+
+  &>div {
+    height: 100%;
+  }
+
+  button {
+    height: 100%;
+    color: whitesmoke;
+  }
+}
