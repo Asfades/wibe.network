@@ -8,9 +8,9 @@ import { PlayerService } from '../components/player/player.service';
 })
 export class AudioService {
   audioContext: AudioContext;
-  sampleSize = 1024;  // number of samples to collect before analyzing data
-  sourceNode: MediaElementAudioSourceNode; // AudioBufferSourceNode; // = this.audioContext.createBufferSource();
-  analyserNode: AnalyserNode; // = this.audioContext.createAnalyser();
+  sampleSize = 1024;
+  sourceNode: MediaElementAudioSourceNode;
+  analyserNode: AnalyserNode;
   javascriptNode: ScriptProcessorNode;
   amplitudeArray: Uint8Array;
 

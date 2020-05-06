@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
 
-import { AudioService } from '@src/app/services/audio.service';
+import { AudioService } from '@services/audio.service';
 
 @Component({
   selector: 'app-visualiser',
@@ -29,6 +29,8 @@ export class VisualiserComponent implements OnInit, OnDestroy {
     };
     this.ctx.fillStyle = '#ffffff';
     this.ctx.strokeStyle = '#ffffff';
+    this.ctx.lineWidth = 2;
+    this.ctx.lineCap = 'round';
     this.audioService.amplitudeArray$.subscribe((amplitudeArray: Uint8Array) => {
       this.ngZone.runOutsideAngular(() => {
         this.clearCanvas();
