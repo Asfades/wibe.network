@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "wibe-network": {
+      "hosting": {
+        "wibe": [
+          "wibe-network"
+        ]
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subject, BehaviorSubject } from 'rxjs';
 
 import * as moment from 'moment';
 
@@ -18,6 +18,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   private isPlaying = null;
   private playerSub: Subscription;
   player: Observable<fromPlayer.State>;
+  currentTime = 0;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -28,6 +29,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.player = this.store.select('player');
     this.playerSub = this.player.subscribe((state) => {
       this.isPlaying = state.isPlaying;
+    });
+    this.playerService.timeUpdate$.subscribe(time => {
+      this.currentTime = time;
     });
   }
 
@@ -63,9 +67,19 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-    if (event.code === 'Space' && typeof(this.isPlaying) === 'boolean') {
+  spacebarUpEvent(event: KeyboardEvent) {
+    const spaceKey = event.code === 'Space';
+    const bool = typeof(this.isPlaying) === 'boolean';
+    const input = event.target instanceof HTMLInputElement;
+    if (spaceKey && bool && !input) {
       this.isPlaying ? this.pause() : this.play();
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  spacebarDownEvent(event: KeyboardEvent) {
+    if (event.code === 'Space' && event.target === document.body) {
+      event.preventDefault();
     }
   }
 

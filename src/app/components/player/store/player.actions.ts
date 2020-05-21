@@ -6,8 +6,6 @@ export const PLAY = '[Player] Play';
 export const PAUSE = '[Player] Pause';
 export const SET_TRACK = '[Player] Set Track';
 export const SET_DURATION = '[Player] Set Duration';
-export const UPDATE_CURRENT_TIME = '[Player] Update Current Time';
-export const UPDATE_TIME = '[Player] Update Time';
 export const PREV_DISABLED = '[Player] PREVIOUS Control is Disabled';
 export const PREV_ENABLED = '[Player] PREVIOUS Control is Enabled';
 export const NEXT_DISABLED = '[Player] NEXT Control is Disabled';
@@ -25,18 +23,6 @@ export class SetTrack implements Action {
   readonly type = SET_TRACK;
 
   constructor(public payload: Track) {}
-}
-
-export class UpdateCurrentTime implements Action {
-  readonly type = UPDATE_CURRENT_TIME;
-
-  constructor(public payload: number) {}
-}
-
-export class UpdateTime implements Action {
-  readonly type = UPDATE_TIME;
-
-  constructor(public payload: number) {}
 }
 
 export class PrevDisabled implements Action {
@@ -69,6 +55,4 @@ export type PlayerActions =
   | PrevEnabled
   | NextDisabled
   | NextEnabled
-  | SetDuration
-  | UpdateCurrentTime
-  | UpdateTime;
+  | SetDuration;

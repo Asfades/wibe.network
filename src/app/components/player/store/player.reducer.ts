@@ -44,11 +44,6 @@ export function playerReducer(
         ...action.payload,
         isPlaying: true
       };
-    case playerActions.UPDATE_CURRENT_TIME:
-      return {
-        ...state,
-        currentTime: action.payload
-      };
     case playerActions.PREV_DISABLED:
       return {
         ...state,

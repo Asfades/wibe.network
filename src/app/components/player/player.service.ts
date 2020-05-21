@@ -1,51 +1,48 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 import * as fromApp from '@store/app.reducer';
 import * as playlistActions from '@playlist/store/playlist.actions';
 import * as playerActions from './store/player.actions';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class PlayerService {
-  private audioObj = new Audio();
-  audio$: Subject<HTMLAudioElement> = new Subject();
+  readonly audioElement = new Audio();
+  timeUpdate$ = new BehaviorSubject<number>(0);
 
   constructor(
     private store: Store<fromApp.AppState>
   ) {
-    console.log('hello, from player service constructor');
+    this.audioElement.crossOrigin = 'anonymous';
   }
 
   setTrack(url: string) {
     if (url) {
-      this.audioObj.src = url;
-      this.audioObj.load();
+      this.audioElement.src = url;
+      this.audioElement.load();
 
-      this.audioObj.onloadeddata = () => {
-        this.store.dispatch(new playerActions.SetDuration(Math.floor(this.audioObj.duration)));
-        this.audio$.next(this.audioObj);
+      this.audioElement.onloadeddata = () => {
+        this.store.dispatch(new playerActions.SetDuration(Math.floor(this.audioElement.duration)));
         this.play();
       };
 
-      this.audioObj.ontimeupdate = () => {
-        this.store.dispatch(new playerActions.UpdateCurrentTime(this.audioObj.currentTime));
+      this.audioElement.ontimeupdate = () => {
+        this.timeUpdate$.next(this.audioElement.currentTime);
       };
     }
   }
 
   changeCurrentTime(time: number) {
-    this.audioObj.currentTime = time;
+    this.audioElement.currentTime = time;
   }
 
   play() {
     this.store.dispatch(new playerActions.Play());
 
-    if (this.audioObj.src.length) {
-      this.audioObj.play();
-      this.audioObj.onended = () => {
+    if (this.audioElement.src.length) {
+      this.audioElement.play();
+      this.audioElement.onended = () => {
         this.store.dispatch(new playlistActions.ChooseNext());
       };
     }
@@ -53,7 +50,7 @@ export class PlayerService {
 
   pause() {
     this.store.dispatch(new playerActions.Pause());
-    this.audioObj.pause();
+    this.audioElement.pause();
   }
 
   next() {

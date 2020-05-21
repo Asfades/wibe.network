@@ -8,4 +8,5 @@
     [active]="i === (playlist | async).trackId"
   >
   </app-playlist-item>
+  <input type="file" (change)="uploadFile($event)">
 </div>

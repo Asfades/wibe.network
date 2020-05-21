@@ -1,0 +1,75 @@
+<form class="upload-item" #uploadForm="ngForm" (ngSubmit)="onSubmit(uploadForm)">
+  <div class="upload-item__progress">
+    <mat-progress-bar
+      mode="determinate"
+      [value]="fileInfo.percentage"
+    ></mat-progress-bar>
+  </div>
+  <div class="upload-item__info-wrapper">
+    <div class="upload-item__info">
+      <span><span class="upload-item__filename-caption">Filename:&nbsp;</span> {{ fileInfo.name }}</span>
+      <div class="upload-item__buttons-wrapper">
+        <button
+          mat-flat-button
+          color="primary"
+          class="upload-item__button"
+          type="submit"
+          [disabled]="submitDisabled"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          color="warn"
+          class="upload-item__button"
+          type="button"
+          (click)="deleteItem()"
+          [disabled]="cancelDisabled"
+        >
+          {{ cancelButtonText }}
+        </button>
+      </div>
+    </div>
+    <div class="upload-item__track-info">
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Artist</mat-label>
+          <input
+            matInput
+            ngModel
+            type="text"
+            name="artist"
+            required
+            minlength="2"
+            pattern="\w+\s?\w+"
+            #artist="ngModel"
+            [disabled]="inputsDisabled"
+          >
+          <mat-hint *ngIf="artist.touched && artist.invalid">Please, enter a valid value</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Track Name</mat-label>
+          <input
+            matInput
+            ngModel
+            type="text"
+            name="name"
+            required
+            minlength="2"
+            pattern="\w+\s?\w+"
+            #name="ngModel"
+            [disabled]="inputsDisabled"
+          >
+          <mat-hint *ngIf="name.touched && name.invalid">Please, enter a valid value</mat-hint>
+        </mat-form-field>
+      </div>
+      <div
+        *ngIf="statusText"
+        class="upload-item__load-caption"
+      >
+        <span>{{ statusText }}&nbsp;</span>
+        <mat-icon [ngStyle]="{'color': iconColor}">{{iconLigature}}</mat-icon>
+      </div>
+    </div>
+  </div>
+</form>
