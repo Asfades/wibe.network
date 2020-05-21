@@ -1,0 +1,54 @@
+.upload {
+  margin: 50px auto;
+  max-width: 800px;
+
+  &__drop-background {
+    position: fixed;
+    background-color: white;
+    opacity: 0.6;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    left: 0;
+    top: 0;
+  }
+
+  &__drop-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px 1px #444;
+    position: fixed;
+    top: 20vh;
+    left: 20vw;
+    height: 60vh;
+    width: 60vw;
+    z-index: 11;
+
+    &-text {
+      color: #444;
+      font-size: 3rem;
+      line-height: 3rem;
+    }
+  }
+}
+
+.upload-file {
+  &__container {
+    background: whitesmoke;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+  }
+
+  &__main {
+    margin: 100px auto;
+    text-align: center;
+
+    &_small {
+      margin: 20px auto;
+    }
+  }
+}

@@ -32,17 +32,17 @@
       </button>
     </div>
     <div class="player__time-slider-container">
-      <span>{{ formatTime((player | async).currentTime) }}</span>
+      <span>{{ formatTime(currentTime) }}</span>
       <mat-slider
         class="player__time-slider"
         min="0"
         [max]="(player | async).duration"
         step="1"
-        [value]="(player | async).currentTime"
+        [value]="currentTime"
         (input)="onSliderChange($event)"
         (mouseup)="onSliderChangeEnd()"
-        [disabled]="!(player | async).currentTime"
-      >
+        [disabled]="!currentTime"
+        >
       </mat-slider>
       <span>{{ formatTime((player | async).duration) }}</span>
     </div>

@@ -8,7 +8,12 @@ import * as playlistActions from './playlist.actions';
 import * as playerActions from '@player/store/player.actions';
 import * as fromApp from '@store/app.reducer';
 import { PlayerService } from '@player/player.service';
-import { AudioService } from '@services/audio.service';
+import { HttpClient } from '@angular/common/http';
+import { Track } from '@entities/track.model';
+import { environment } from '@src/environments/environment.prod';
+import { AngularFireStorage } from '@angular/fire/storage';
+
+const tracksFeed = 'https://wibe-network.firebaseio.com/playlist.json';
 
 @Injectable()
 export class PlaylistEffects {
@@ -16,7 +21,8 @@ export class PlaylistEffects {
     private actions$: Actions,
     private store: Store<fromApp.AppState>,
     private playerService: PlayerService,
-    private audioService: AudioService
+    private http: HttpClient,
+    private fireStorage: AngularFireStorage
   ) {}
 
   @Effect()
@@ -30,7 +36,6 @@ export class PlaylistEffects {
         const actionsToDispatch: Action[] = [];
         if (track) {
           this.playerService.setTrack(track.filePath);
-          // this.audioService.setTrack(track.filePath);
           actionsToDispatch.push(new playerActions.SetTrack(track));
         }
         if (nextAvailable) {
@@ -46,5 +51,16 @@ export class PlaylistEffects {
         return actionsToDispatch;
       }
     )
+  );
+
+  @Effect()
+  fetchPlaylist = this.actions$.pipe(
+    ofType(playlistActions.FETCH_PLAYLIST),
+    switchMap(() => {
+      return this.http.get<Track[]>(tracksFeed);
+    }),
+    map(playlist => {
+      return new playlistActions.SetPlaylist(playlist);
+    })
   );
 }

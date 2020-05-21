@@ -8,31 +8,31 @@ export interface State {
 
 const initialState: State = {
   tracks: [
-    {
-      filePath: 'http://localhost:4200/assets/Bones-Rap.mp3',
-      artist: 'Bones',
-      name: 'Rap'
-    },
-    {
-      filePath: 'http://localhost:4200/assets/Tempo.mp3',
-      artist: 'Bones',
-      name: 'Tempo'
-    },
-    {
-      filePath: 'http://localhost:4200/assets/Bones-XLR.mp3',
-      artist: 'Bones',
-      name: 'XLR'
-    },
-    {
-      filePath: 'http://localhost:4200/assets/Bones-ChampagneInTheGraveyard.mp3',
-      artist: 'Bones',
-      name: 'ChampagneInTheGraveyard'
-    },
-    {
-      filePath: 'http://localhost:4200/assets/no-sleep.mp3',
-      artist: 'unknown',
-      name: 'no-sleep'
-    }
+    // {
+    //   filePath: 'http://localhost:4200/assets/Bones-Rap.mp3',
+    //   artist: 'Bones',
+    //   name: 'Rap'
+    // },
+    // {
+    //   filePath: 'http://localhost:4200/assets/Tempo.mp3',
+    //   artist: 'Bones',
+    //   name: 'Tempo'
+    // },
+    // {
+    //   filePath: 'http://localhost:4200/assets/Bones-XLR.mp3',
+    //   artist: 'Bones',
+    //   name: 'XLR'
+    // },
+    // {
+    //   filePath: 'http://localhost:4200/assets/Bones-ChampagneInTheGraveyard.mp3',
+    //   artist: 'Bones',
+    //   name: 'ChampagneInTheGraveyard'
+    // },
+    // {
+    //   filePath: 'http://localhost:4200/assets/no-sleep.mp3',
+    //   artist: 'unknown',
+    //   name: 'no-sleep'
+    // }
   ],
   trackId: null
 };
@@ -42,6 +42,15 @@ export function playlistReducer(
   action: playlistActions.PlaylistActions
 ) {
   switch (action.type) {
+    case playlistActions.FETCH_PLAYLIST:
+      return {
+        ...state
+      };
+    case playlistActions.SET_PLAYLIST:
+      return {
+        ...state,
+        tracks: action.payload
+      };
     case playlistActions.CHOOSE_TRACK:
       return {
         tracks: deepCloneTrackList(state.tracks),

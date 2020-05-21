@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { PlayerService } from '../components/player/player.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class AudioService {
   audioContext: AudioContext;
   sampleSize = 1024;
@@ -19,11 +17,8 @@ export class AudioService {
   constructor(
     private playerService: PlayerService
   ) {
-    this.playerService.audio$.subscribe((audioEl: HTMLAudioElement) => {
-      this.setupAudioNodes(audioEl);
-    });
+    this.setupAudioNodes(this.playerService.audioElement);
   }
-
 
   private setupAudioNodes(audioEl: HTMLAudioElement) {
     this.audioContext = new AudioContext();

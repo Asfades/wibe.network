@@ -10,9 +10,9 @@ import * as AuthActions from './auth.actions';
 import { User } from '../user.model';
 import { AuthService } from '../auth.service';
 
-const signupAPIURL = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + environment.firebaseAPIKey;
-const signinAPIURL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + environment.firebaseAPIKey;
-const refreshTokenAPIURL = 'https://securetoken.googleapis.com/v1/token?key=' + environment.firebaseAPIKey;
+const signupAPIURL = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + environment.firebase.apiKey;
+const signinAPIURL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + environment.firebase.apiKey;
+const refreshTokenAPIURL = 'https://securetoken.googleapis.com/v1/token?key=' + environment.firebase.apiKey;
 
 export interface AuthResponseData {
   kind: string;

@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromApp from '@store/app.reducer';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AuthGuard implements CanActivate {
   constructor(
     private store: Store<fromApp.AppState>,
