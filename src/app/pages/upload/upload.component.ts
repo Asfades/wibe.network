@@ -19,6 +19,12 @@ export class UploadComponent implements OnInit {
     this.uploads$ = this.uploadService.uploadsChanged.asObservable();
   }
 
+  // @HostListener('window:beforeunload', ['$event']) onbeforeunload(event) {
+  //   event.preventDefault();
+  //   // Chrome requires returnValue to be set.
+  //   event.returnValue = '';
+  // }
+
   @HostListener('document:dragover', ['$event']) onDragOverDoc(event) {
     event.preventDefault();
     event.stopPropagation();
