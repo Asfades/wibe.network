@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 import { AuthComponent } from '../pages/auth/auth.component';
 import { HomeComponent } from '../pages/home/home.component';
 import { AuthGuard } from '../pages/auth/auth.guard';
-import { UploadComponent } from '../pages/upload/upload.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -19,13 +18,12 @@ const routes: Routes = [
   },
   {
     path: 'upload',
-    component: UploadComponent,
-    canActivate: [AuthGuard]
+    loadChildren: () => import('@pages/upload/upload.module').then(module => module.UploadModule)
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

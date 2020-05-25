@@ -26,10 +26,8 @@ import { PlaylistComponent } from '@playlist/playlist.component';
 import { PlaylistItemComponent } from '@playlist/playlist-item/playlist-item.component';
 import { PlaylistEffects } from '@playlist/store/playlist.effects';
 import { VisualiserComponent } from './components/visualiser/visualiser.component';
-import { HomeComponent } from './pages/home/home.component';
-import { UploadComponent } from './pages/upload/upload.component';
-import { DropPlaceComponent } from './pages/upload/drop-place/drop-place.component';
-import { UploadItemComponent } from './pages/upload/upload-item/upload-item.component'; // page
+import { HomeComponent } from './pages/home/home.component'; // page
+import { UploadModule } from './pages/upload/upload.module';
 
 @NgModule({
   declarations: [
@@ -40,10 +38,7 @@ import { UploadItemComponent } from './pages/upload/upload-item/upload-item.comp
     PlaylistItemComponent,
     VisualiserComponent,
     AuthComponent,
-    HomeComponent,
-    UploadComponent,
-    DropPlaceComponent,
-    UploadItemComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +47,7 @@ import { UploadItemComponent } from './pages/upload/upload-item/upload-item.comp
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    UploadModule,
     StoreModule.forRoot(fromApp.appReducer, { metaReducers: fromApp.metaReducers }),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
     EffectsModule.forRoot([PlaylistEffects, AuthEffects]),
