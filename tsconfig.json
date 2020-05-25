@@ -8,7 +8,8 @@
       "@player/*": ["src/app/components/player/*"],
       "@playlist/*": ["src/app/components/playlist/*"],
       "@store/*": ["src/app/store/*"],
-      "@services/*": ["src/app/services/*"]
+      "@services/*": ["src/app/services/*"],
+      "@pages/*": ["src/app/pages/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
