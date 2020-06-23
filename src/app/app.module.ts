@@ -29,6 +29,7 @@ import { VisualiserComponent } from './components/visualiser/visualiser.componen
 import { HomeComponent } from './pages/home/home.component'; // page
 import { UploadModule } from './pages/upload/upload.module';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { ProfileModule } from './pages/profile/profile.module';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     BrowserAnimationsModule,
     MaterialModule,
     UploadModule,
+    ProfileModule,
     StoreModule.forRoot(fromApp.appReducer, { metaReducers: fromApp.metaReducers }),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
     EffectsModule.forRoot([PlaylistEffects, AuthEffects]),
