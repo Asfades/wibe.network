@@ -28,6 +28,7 @@ import { PlaylistEffects } from '@playlist/store/playlist.effects';
 import { VisualiserComponent } from './components/visualiser/visualiser.component';
 import { HomeComponent } from './pages/home/home.component'; // page
 import { UploadModule } from './pages/upload/upload.module';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { UploadModule } from './pages/upload/upload.module';
     PlaylistItemComponent,
     VisualiserComponent,
     AuthComponent,
-    HomeComponent
+    HomeComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
