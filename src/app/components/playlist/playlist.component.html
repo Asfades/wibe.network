@@ -1,12 +1,13 @@
 <div class="playlist-container">
   <p class="name">Demo Playlist</p>
-  <app-playlist-item
-    *ngFor="let track of (playlist | async).tracks; let i = index"
-    (click)="chooseTrack(i)"
-    [track]="track"
-    [id]="i + 1"
-    [active]="i === (playlist | async).trackId"
-  >
-  </app-playlist-item>
-  <input type="file" (change)="uploadFile($event)">
+  <ng-template [ngIf]="(playlist | async).tracks">
+    <app-playlist-item
+      *ngFor="let track of (playlist | async).tracks; let i = index; trackBy: trackByIndex"
+      (click)="chooseTrack(i)"
+      [track]="track"
+      [id]="i + 1"
+      [active]="i === (playlist | async).trackId"
+    >
+    </app-playlist-item>
+  </ng-template>
 </div>
