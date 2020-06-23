@@ -4,16 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { BehaviorSubject } from 'rxjs';
 
-const makeID = (length) => {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++ ) {
-     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
-
 @Injectable({providedIn: 'root'})
 export class UploadService {
   private uploads: UploadState[] = [];
@@ -85,6 +75,16 @@ export class UploadService {
       });
     });
   }
+}
+
+function makeID(length) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++ ) {
+     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
 
 export interface UploadState {
