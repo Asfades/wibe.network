@@ -193,8 +193,10 @@ export class AuthEffects {
     ofType(AuthActions.AUTO_LOGIN),
     map(() => {
       const userData: UserData = JSON.parse(localStorage.getItem('userData'));
-      if (!userData || !userData._token) {
+      if (!userData) {
         return { type: 'DUMMY' };
+      } else if (!userData._token) {
+        return new AuthActions.RefreshSessionStart();
       }
 
       const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();

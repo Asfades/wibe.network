@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription, Observable } from 'rxjs';
 
@@ -12,9 +12,9 @@ import { AngularFireStorage } from '@angular/fire/storage';
   templateUrl: './playlist.component.html',
   styleUrls: ['./playlist.component.scss']
 })
-export class PlaylistComponent implements OnInit {
+export class PlaylistComponent implements OnInit, OnDestroy {
   playlist: Observable<{ tracks: Track[], trackId: number }>;
-  chosenTrack: number;
+  sub: Subscription;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -22,25 +22,23 @@ export class PlaylistComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.sub = this.store.select('auth').subscribe((auth) => {
+      if (auth.user.token) {
+        this.store.dispatch(new playlistActions.FetchPlaylist());
+      }
+    });
     this.playlist = this.store.select('playlist');
-    this.store.dispatch(new playlistActions.FetchPlaylist());
-    // const ref = this.fireStorage.ref('tracks/Bones-XLR.mp3');
-    // ref.getDownloadURL().subscribe(val => console.log(val));
   }
 
   chooseTrack(index: number) {
-    this.chosenTrack = index;
     this.store.dispatch(new playlistActions.ChooseTrack(index));
   }
 
-  uploadFile(event) {
-    console.log(event);
-    const file = event.target.files[0];
-    const filePath = `tracks/${event.target.files[0].name}`;
-    const ref = this.fireStorage.ref(filePath);
-    const task = ref.put(file);
-    task.percentageChanges().subscribe(val => {
-      console.log(val);
-    });
+  trackByIndex(index: number) {
+    return index;
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

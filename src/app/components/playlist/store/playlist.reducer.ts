@@ -42,10 +42,6 @@ export function playlistReducer(
   action: playlistActions.PlaylistActions
 ) {
   switch (action.type) {
-    case playlistActions.FETCH_PLAYLIST:
-      return {
-        ...state
-      };
     case playlistActions.SET_PLAYLIST:
       return {
         ...state,
