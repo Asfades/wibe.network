@@ -31,15 +31,16 @@ export class AuthComponent implements OnInit {
     }
     const {
       email,
+      username,
       password
     } = form.form.value;
 
     this.isLoading = true;
 
     if (this.isLoginMode) {
-      this.store.dispatch(new AuthActions.LoginStart({email, password}));
+      this.store.dispatch(new AuthActions.LoginStart({username: email, password}));
     } else {
-      this.store.dispatch(new AuthActions.SignupStart({email, password}));
+      this.store.dispatch(new AuthActions.SignupStart({email, username, password}));
     }
   }
 

@@ -8,7 +8,6 @@ import { UploadComponent } from './upload.component';
 import { DropPlaceComponent } from './drop-place/drop-place.component';
 import { UploadItemComponent } from './upload-item/upload-item.component';
 import { AuthGuard } from '../auth/auth.guard';
-import { CanDeactivateUpload } from './canDeactivateUpload.guard';
 
 const declarations = [
   UploadComponent,
@@ -23,7 +22,7 @@ const declarations = [
     RouterModule.forChild([{
       path: '', component: UploadComponent,
       canActivate: [AuthGuard],
-      canDeactivate: [CanDeactivateUpload]
+      // canDeactivate: [CanDeactivateUpload]
     }]),
     MaterialModule
   ],

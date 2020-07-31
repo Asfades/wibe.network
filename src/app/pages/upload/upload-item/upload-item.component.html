@@ -1,20 +1,25 @@
-<form class="upload-item" #uploadForm="ngForm" (ngSubmit)="onSubmit(uploadForm)">
+<form
+  *ngIf="fileInfo | async as uploadState"
+  class="upload-item"
+  #uploadForm="ngForm"
+  (ngSubmit)="onSubmit(uploadForm, uploadState)"
+>
   <div class="upload-item__progress">
     <mat-progress-bar
       mode="determinate"
-      [value]="fileInfo.percentage"
+      [value]="uploadState.loadPercentage"
     ></mat-progress-bar>
   </div>
   <div class="upload-item__info-wrapper">
     <div class="upload-item__info">
-      <span><span class="upload-item__filename-caption">Filename:&nbsp;</span> {{ fileInfo.name }}</span>
+      <span><span class="upload-item__filename-caption">Filename:&nbsp;</span>{{ uploadState.filename }}</span>
       <div class="upload-item__buttons-wrapper">
         <button
           mat-flat-button
           color="primary"
           class="upload-item__button"
           type="submit"
-          [disabled]="submitDisabled"
+          [disabled]="uploadForm.invalid || getSubmitDisabled(uploadState.status)"
         >
           Save
         </button>
@@ -24,9 +29,9 @@
           class="upload-item__button"
           type="button"
           (click)="deleteItem()"
-          [disabled]="cancelDisabled"
+          [disabled]="uploadForm.invalid && uploadForm.touched || getCancelDisabled(uploadState.status)"
         >
-          {{ cancelButtonText }}
+          {{ getCancelButtonText(uploadState.status) }}
         </button>
       </div>
     </div>
@@ -43,7 +48,7 @@
             minlength="2"
             pattern="\w+\s?\w+"
             #artist="ngModel"
-            [disabled]="inputsDisabled"
+            [disabled]="getInputsDisabled(uploadState.status)"
           >
           <mat-hint *ngIf="artist.touched && artist.invalid">Please, enter a valid value</mat-hint>
         </mat-form-field>
@@ -58,17 +63,17 @@
             minlength="2"
             pattern="\w+\s?\w+"
             #name="ngModel"
-            [disabled]="inputsDisabled"
+            [disabled]="getInputsDisabled(uploadState.status)"
           >
           <mat-hint *ngIf="name.touched && name.invalid">Please, enter a valid value</mat-hint>
         </mat-form-field>
       </div>
       <div
-        *ngIf="statusText"
+        *ngIf="getStatusText(uploadState.status)"
         class="upload-item__load-caption"
       >
-        <span>{{ statusText }}&nbsp;</span>
-        <mat-icon [ngStyle]="{'color': iconColor}">{{iconLigature}}</mat-icon>
+        <span>{{ getStatusText(uploadState.status) }}&nbsp;</span>
+        <mat-icon [ngStyle]="{'color': getIconColor(uploadState.status)}">{{ getIconLigature(uploadState.status) }}</mat-icon>
       </div>
     </div>
   </div>
