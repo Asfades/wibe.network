@@ -1,34 +1,34 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { UploadStatus, UploadState } from '../upload.service';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-upload-item',
+  selector: 'app-upload-items',
   templateUrl: './upload-item.component.html',
   styleUrls: ['./upload-item.component.scss']
 })
 export class UploadItemComponent implements OnInit {
-  @ViewChild('uploadForm', { static: true }) form: NgForm;
-  @Input() fileInfo: Observable<UploadState>;
+  @Input() uploads: Observable<UploadState>[];
   @Output() confirm = new EventEmitter<{
       artist: string,
-      name: string
+      name: string,
+      index: number
     }>();
-  @Output() delete = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<{ index: number, upload: UploadState }>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  deleteItem() {
-    this.delete.emit();
+  deleteItem(index: number, upload: UploadState) {
+    this.delete.emit({ index, upload });
   }
 
-  onSubmit(form: NgForm, uploadState: UploadState) {
-    this.confirm.emit({ ...form.value, uploadState });
+  onSubmit(form: NgForm, uploadState: UploadState, index: number) {
+    this.confirm.emit({ ...form.value, uploadState, index });
   }
 
   getIconColor(status: UploadStatus): string {

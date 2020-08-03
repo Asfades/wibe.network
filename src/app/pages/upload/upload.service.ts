@@ -19,16 +19,11 @@ export class UploadService {
       formData.set('audio', file);
 
       const filename = file.name;
-      const id = makeID(5);
-      const uploadState: UploadState = {
+      let uploadState: UploadState = {
         filename,
         status: UploadStatus.Loading,
         loadPercentage: 0,
-        id
       };
-
-      // const request = new XMLHttpRequest();
-      // request.
 
       const upload = this.http.post<{ filename: string, trackId: string }>(
         'http://localhost:3000/audio/preload',
@@ -37,7 +32,10 @@ export class UploadService {
           observe: 'events'
         }
       ).pipe(
-        map(event => parseUploadEvents(event, uploadState)),
+        map(event => {
+          uploadState = parseUploadEvents(event, uploadState);
+          return uploadState;
+        }),
         tap((val) => console.log(val))
       );
 
@@ -45,24 +43,13 @@ export class UploadService {
     }
   }
 
-  deleteUploadedFile(index) {
-    this.uploads.splice(index, 1);
-    // if (this.uploads[index].status === UploadStatus.Preloaded) {
-    //   this.uploads[index].storageRef.delete().subscribe(() => {
-    //     this.uploads.splice(index, 1);
-    //     this.uploadsChanged.next(this.uploads);
-    //   });
-    // } else if (this.uploads[index].status === UploadStatus.Cancelled) {
-    //   this.uploads.splice(index, 1);
-    //   this.uploadsChanged.next(this.uploads);
-    // } else {
-    //   this.uploads[index].status = UploadStatus.Cancelled;
-    //   this.uploads[index].storageTask.cancel();
-    // }
+  deleteUploadedFile(data: { index: number, upload: UploadState }) {
+    this.uploads.splice(data.index, 1);
+    this.http.delete(`http://localhost:3000/audio/delete/${data.upload.trackId}`).subscribe();
   }
 
-  confirmFile(data: { artist: string, name: string, uploadState: UploadState }, index: number) {
-    const { artist, name, uploadState } = data;
+  confirmFile(data: { artist: string, name: string, uploadState: UploadState, index: number }) {
+    const { artist, name, uploadState, index } = data;
     const payload = {
       name: `${artist} - ${name}`,
       genres: ['rap', 'hip-hop']
@@ -82,42 +69,22 @@ export class UploadService {
   }
 }
 
-function parseUploadEvents(event, initialState: UploadState) {
-  let uploadState = initialState;
-
+function parseUploadEvents(event, previousState: UploadState) {
   switch (event.type) {
-    case HttpEventType.Sent:
-      return uploadState;
     case HttpEventType.UploadProgress:
       const loadPercentage = Math.round(100 * event.loaded / event.total);
-      uploadState = { ...uploadState, loadPercentage };
-      return uploadState;
-    case HttpEventType.ResponseHeader:
-      return uploadState;
+      return { ...previousState, loadPercentage };
     case HttpEventType.Response:
-      uploadState = { ...uploadState, status: UploadStatus.Preloaded, trackId: event.body.trackId };
-      return uploadState;
+      return { ...previousState, status: UploadStatus.Preloaded, trackId: event.body.trackId };
     case HttpEventType.User:
-      console.log('user event');
-      console.log(event);
-      return uploadState;
+    case HttpEventType.Sent:
+    case HttpEventType.ResponseHeader:
     default:
-      return uploadState;
+      return previousState;
   }
-}
-
-function makeID(length) {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++ ) {
-     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
 }
 
 export interface UploadState {
-  id: string;
   filename: File;
   loadPercentage: number;
   status: UploadStatus;

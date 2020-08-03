@@ -9,14 +9,14 @@ import { Observable } from 'rxjs';
 })
 export class UploadComponent implements OnInit {
   dragFile = false;
-  uploads$: Observable<UploadState>[] = [];
+  uploads: Observable<UploadState>[] = [];
 
   constructor(
     private uploadService: UploadService
   ) {}
 
   ngOnInit(): void {
-    this.uploads$ = this.uploadService.uploads;
+    this.uploads = this.uploadService.uploads;
   }
 
   @HostListener('document:dragover', ['$event']) onDragOverDoc(event) {
@@ -47,16 +47,16 @@ export class UploadComponent implements OnInit {
     this.uploadService.uploadFiles(files);
   }
 
-  deleteUploadedFile(index) {
-    this.uploadService.deleteUploadedFile(index);
+  deleteUploadedFile(data: { index: number, upload: UploadState }) {
+    this.uploadService.deleteUploadedFile(data);
   }
 
-  confirmFile(data: { artist: string, name: string, uploadState: UploadState }, index: number) {
-    this.uploadService.confirmFile(data, index);
+  confirmFile(data: { artist: string, name: string, uploadState: UploadState, index: number }) {
+    this.uploadService.confirmFile(data);
   }
 
-  trackUploadKey(index: number, upload: UploadState) {
-    return index;
-  }
+  // trackUploadKey(index: number, upload: UploadState) {
+  //   return upload.id;
+  // }
 
 }
