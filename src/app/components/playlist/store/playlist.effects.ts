@@ -53,14 +53,14 @@ export class PlaylistEffects {
     )
   );
 
-  @Effect()
-  fetchPlaylist = this.actions$.pipe(
-    ofType(playlistActions.FETCH_PLAYLIST),
-    switchMap(() => {
-      return this.http.get<Track[]>(tracksFeed);
-    }),
-    map(playlist => {
-      return new playlistActions.SetPlaylist(playlist);
-    })
-  );
+  // @Effect()
+  // fetchPlaylist = this.actions$.pipe(
+  //   ofType(playlistActions.FETCH_PLAYLIST),
+  //   switchMap(() => {
+  //     return this.http.get<Track[]>(tracksFeed);
+  //   }),
+  //   map(playlist => {
+  //     return new playlistActions.SetPlaylist(playlist);
+  //   })
+  // );
 }

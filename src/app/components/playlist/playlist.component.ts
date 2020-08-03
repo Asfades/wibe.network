@@ -23,7 +23,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub = this.store.select('auth').subscribe((auth) => {
-      if (auth.user.token) {
+      if (auth.user.accessToken) {
         this.store.dispatch(new playlistActions.FetchPlaylist());
       }
     });

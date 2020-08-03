@@ -2,7 +2,7 @@
   <div class="upload-file">
     <div class="upload-file__container">
       <input hidden type="file" #fileInput (change)="uploadFiles($event.target.files)" multiple>
-      <div class="upload-file__main" [ngClass]="{'upload-file__main_small': (uploads$ | async).length}">
+      <div class="upload-file__main" [ngClass]="{'upload-file__main_small': uploads.length}">
         <p>Drag and drop your tracks here</p>
         <button
           mat-flat-button
@@ -12,16 +12,11 @@
       </div>
     </div>
     <div class="upload-file__list">
-      <app-upload-item
-        *ngFor="let upload of uploads$ | async; let i = index; trackBy: trackUploadKey"
-        [fileInfo]="{
-          name: upload.file.name,
-          percentage: upload.loadPercentage,
-          status: upload.status
-        }"
-        (delete)="deleteUploadedFile(i)"
-        (confirm)="confirmFile($event, i)"
-      ></app-upload-item>
+      <app-upload-items
+        [uploads]="uploads"
+        (delete)="deleteUploadedFile($event)"
+        (confirm)="confirmFile($event)"
+      ></app-upload-items>
     </div>
   </div>
   <app-drop-place

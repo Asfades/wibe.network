@@ -14,11 +14,17 @@ export class AuthenticateSuccess implements Action {
 
   constructor(
     public payload: {
-      email: string;
-      userId: string;
-      token: string;
-      expirationDate: Date;
+      // email: string;
+      username: string;
+      refreshToken: string;
+      accessToken: string;
       redirect: boolean;
+      expirationDate: Date;
+      // email: string;
+      // userId: string;
+      // token: string;
+      // expirationDate: Date;
+      // redirect: boolean;
     }
   ) {}
 }
@@ -32,7 +38,8 @@ export class LoginStart implements Action {
 
   constructor(
     public payload: {
-      email: string,
+      // email: string,
+      username: string,
       password: string
     }
   ) {}
@@ -50,6 +57,7 @@ export class SignupStart implements Action {
   constructor(
     public payload: {
       email: string,
+      username: string,
       password: string
     }
   ) {}
