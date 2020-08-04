@@ -6,10 +6,10 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-upload-items',
-  templateUrl: './upload-item.component.html',
-  styleUrls: ['./upload-item.component.scss']
+  templateUrl: './upload-items.component.html',
+  styleUrls: ['./upload-items.component.scss']
 })
-export class UploadItemComponent implements OnInit {
+export class UploadItemsComponent implements OnInit {
   @Input() uploads: Observable<UploadState>[];
   @Output() confirm = new EventEmitter<{
       artist: string,

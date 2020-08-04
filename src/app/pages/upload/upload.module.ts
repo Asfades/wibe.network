@@ -6,13 +6,13 @@ import { MaterialModule } from '@src/app/modules/material.module';
 
 import { UploadComponent } from './upload.component';
 import { DropPlaceComponent } from './drop-place/drop-place.component';
-import { UploadItemComponent } from './upload-item/upload-item.component';
+import { UploadItemsComponent } from './upload-item/upload-items.component';
 import { AuthGuard } from '../auth/auth.guard';
 
 const declarations = [
   UploadComponent,
   DropPlaceComponent,
-  UploadItemComponent
+  UploadItemsComponent
 ];
 
 @NgModule({
