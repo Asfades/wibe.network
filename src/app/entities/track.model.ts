@@ -1,5 +1,6 @@
 export interface Track {
-  filePath: string;
-  artist: string;
+  // filePath: string;
+  // artist: string;
   name: string;
+  filename: string;
 }

@@ -2,8 +2,8 @@ import { Track } from '@entities/track.model';
 import * as playerActions from './player.actions';
 
 export interface State extends Track {
-  filePath: string;
-  artist: string;
+  filename: string;
+  // artist: string;
   name: string;
   currentTime: number;
   duration: number;
@@ -13,8 +13,8 @@ export interface State extends Track {
 }
 
 const initialState: State = {
-  filePath: '',
-  artist: '',
+  filename: '',
+  // artist: '',
   name: '',
   currentTime: 0,
   duration: 0,
