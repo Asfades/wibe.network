@@ -50,6 +50,7 @@ export class UploadService {
 
   confirmFile(data: { artist: string, name: string, uploadState: UploadState, index: number }) {
     const { artist, name, uploadState, index } = data;
+    let uploadedState;
     const payload = {
       name: `${artist} - ${name}`,
       genres: ['rap', 'hip-hop']
@@ -63,9 +64,12 @@ export class UploadService {
         }
       ).pipe(
         tap((response) => console.log(response)),
-        map(() => ({ ...uploadState, status: UploadStatus.Saved })),
+        map(() => {
+          uploadedState = { ...uploadState, status: UploadStatus.Saved };
+          return uploadedState;
+        }),
         finalize(() => {
-          this.uploads[index] = of(uploadState);
+          this.uploads[index] = of(uploadedState);
         })
       )
     );
