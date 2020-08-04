@@ -5,7 +5,6 @@ import { Subscription, Observable } from 'rxjs';
 import * as playlistActions from './store/playlist.actions';
 import { Track } from '@entities/track.model';
 import * as fromApp from '../../store/app.reducer';
-import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-playlist',
@@ -17,16 +16,11 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   sub: Subscription;
 
   constructor(
-    private store: Store<fromApp.AppState>,
-    private fireStorage: AngularFireStorage
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit(): void {
-    this.sub = this.store.select('auth').subscribe((auth) => {
-      if (auth.user.accessToken) {
-        this.store.dispatch(new playlistActions.FetchPlaylist());
-      }
-    });
+    this.store.dispatch(new playlistActions.FetchPlaylist());
     this.playlist = this.store.select('playlist');
   }
 
@@ -39,6 +33,5 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
   }
 }

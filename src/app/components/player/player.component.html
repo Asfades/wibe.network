@@ -10,7 +10,7 @@
       </button>
       <button
         mat-button
-        [disabled]="!(player | async).filePath"
+        [disabled]="!(player | async).filename"
         (click)="play()"
         *ngIf="!(player | async).isPlaying"
       >
