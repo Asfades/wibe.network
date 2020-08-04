@@ -12,7 +12,6 @@ import { AuthService } from '../auth.service';
 
 const signupAPIURL = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + environment.firebase.apiKey;
 const signinAPIURL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + environment.firebase.apiKey;
-// const refreshTokenAPIURL = 'https://securetoken.googleapis.com/v1/token?key=' + environment.firebase.apiKey;
 const refreshTokenAPIURL = 'http://localhost:3000/auth/refresh-access-token';
 
 @Injectable()
@@ -37,21 +36,6 @@ export class AuthEffects {
         map(resData => handleAuthentication(resData)),
         catchError(errorRes => handleError(errorRes))
       );
-      // return this.http.post<AuthResponseData>(signupAPIURL, {
-      //   email: signupAction.payload.email,
-      //   password: signupAction.payload.password,
-      //   returnSecureToken: true
-      // }).pipe(
-      //   tap(resData => {
-      //     this.authService.setRefreshTimer(+resData.expiresIn * 1000);
-      //   }),
-      //   map(resData => {
-      //     return handleAuthentication(resData);
-      //   }),
-      //   catchError(errorRes => {
-      //     return handleError(errorRes);
-      //   })
-      // );
     })
   );
 
@@ -67,21 +51,6 @@ export class AuthEffects {
         map(resData =>  handleAuthentication(resData)),
         catchError(errorRes => handleError(errorRes))
       );
-      // return this.http.post<AuthResponseData>(signinAPIURL, {
-      //   email: authData.payload.email,
-      //   password: authData.payload.password,
-      //   returnSecureToken: true
-      // }).pipe(
-      //   tap(resData => {
-      //     this.authService.setRefreshTimer(3600 * 1000);
-      //   }),
-      //   map(resData => {
-      //     return handleAuthentication(resData);
-      //   }),
-      //   catchError(errorRes => {
-      //     return handleError(errorRes);
-      //   })
-      // );
     })
   );
 
@@ -112,7 +81,6 @@ export class AuthEffects {
         refreshToken: userData.refreshToken,
         accessToken: userData._accessToken,
         expirationDate: new Date(userData._tokenExpirationDate),
-        // expirationDate: new Date(userData._tokenExpirationDate),
         redirect: false
       });
     })
@@ -134,10 +102,10 @@ export class AuthEffects {
     ofType(AuthActions.REFRESH_SESSION_START),
     switchMap(() => {
       const userData: UserData = JSON.parse(localStorage.getItem('userData'));
-      // const refreshToken = localStorage.getItem('refreshToken');
       if (!userData.refreshToken) {
         return of({ type: 'DUMMY' });
       }
+
       return this.http.post<RefreshResponseData>(refreshTokenAPIURL,
         {
           username: userData.username,
@@ -159,17 +127,10 @@ export class AuthEffects {
 }
 
 export interface AuthResponseData {
-  // kind: string;
-  // idToken: string;
-  // email: string;
   username: string;
   accessToken: string;
   expirationDate: string;
   refreshToken: string;
-  // refreshToken: string;
-  // expiresIn: string;
-  // localId: string;
-  // registered?: boolean;
 }
 
 interface RefreshResponseData {
@@ -177,23 +138,13 @@ interface RefreshResponseData {
   accessToken: string;
   expirationDate: string;
   refreshToken: string;
-  // expires_in: string;
-  // token_type: string;
-  // refresh_token: string;
-  // id_token: string;
-  // user_id: string;
-  // project_id: string;
 }
 
 interface UserData {
-  // email: string;
   username: string;
   refreshToken: string;
   _accessToken: string;
   _tokenExpirationDate: string;
-  // id: string;
-  // _token: string;
-  // _tokenExpirationDate: string;
 }
 
 function handleAuthentication(resData: AuthResponseData) {
@@ -203,13 +154,8 @@ function handleAuthentication(resData: AuthResponseData) {
     resData.refreshToken,
     resData.accessToken,
     expirationDate,
-    // resData.email,
-    // 'resData.localId',
-    // 'resData.idToken',
-    // expirationDate
   );
   localStorage.setItem('userData', JSON.stringify(user));
-  // localStorage.setItem('refreshToken', resData.refreshToken);
 
   return new AuthActions.AuthenticateSuccess({
     username: resData.username,
@@ -250,23 +196,14 @@ function handleIdTokenRefresh(resData: RefreshResponseData) {
     resData.refreshToken,
     resData.accessToken,
     expirationDate
-    // userData.email,
-    // resData.user_id,
-    // resData.id_token,
-    // expirationDate
   );
   localStorage.setItem('userData', JSON.stringify(user));
-  // localStorage.setItem('refreshToken', resData.refreshToken);
 
   return new AuthActions.AuthenticateSuccess({
-    // email: userData.email,
     username: resData.username,
     refreshToken: resData.refreshToken,
-    // userId: resData.user_id,
-    // token: resData.id_token,
     accessToken: resData.accessToken,
     expirationDate: new Date(),
-    // expirationDate,
     redirect: false
   });
 }
