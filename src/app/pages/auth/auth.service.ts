@@ -22,8 +22,9 @@ export class AuthService {
     private store: Store<fromApp.AppState>
   ) {}
 
-  setRefreshTimer(expirationDuration: number) { // ms
+  setRefreshTimer(expirationDate: Date) { // ms
     this.clearRefreshTimer();
+    const expirationDuration = expirationDate.getTime() - new Date().getTime();
     const enoughTimeBuffer = (expirationDuration - 300000) > 0; // less then 5 mins
     if (!enoughTimeBuffer) {
       this.store.dispatch(new AuthActions.RefreshSessionStart());

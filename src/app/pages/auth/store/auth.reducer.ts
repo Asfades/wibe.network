@@ -20,10 +20,14 @@ export function authReducer(
   switch (action.type) {
     case AuthActions.AUTHENTICATE_SUCCESS:
       const user = new User(
-        action.payload.email,
-        action.payload.userId,
-        action.payload.token,
+        action.payload.username,
+        action.payload.refreshToken,
+        action.payload.accessToken,
         action.payload.expirationDate
+        // action.payload.email,
+        // action.payload.userId,
+        // action.payload.token,
+        // action.payload.expirationDate
       );
       return {
         ...state,

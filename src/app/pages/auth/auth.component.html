@@ -19,6 +19,17 @@
       >
       <!-- <mat-hint></mat-hint> -->
     </mat-form-field>
+    <mat-form-field appearance="standard" *ngIf="!isLoginMode">
+      <mat-label>Username</mat-label>
+      <input
+        matInput
+        type="text"
+        ngModel
+        name="username"
+        required
+      >
+      <!-- <mat-hint></mat-hint> -->
+    </mat-form-field>
     <mat-form-field appearance="standard">
       <mat-label>Password</mat-label>
       <input
