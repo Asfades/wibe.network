@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, finalize } from 'rxjs/operators';
 import { concat, of } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
@@ -63,7 +63,10 @@ export class UploadService {
         }
       ).pipe(
         tap((response) => console.log(response)),
-        map(() => ({ ...uploadState, status: UploadStatus.Saved }))
+        map(() => ({ ...uploadState, status: UploadStatus.Saved })),
+        finalize(() => {
+          this.uploads[index] = of(uploadState);
+        })
       )
     );
   }
