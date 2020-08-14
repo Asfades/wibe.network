@@ -1,0 +1,11 @@
+<div class="overlay" (click)="hideModal()">
+  <button
+    class="close"
+    title="close"
+    (click)="hideModal()"
+  >Close</button>
+  <div class="card">
+    <h2>{{ title }}</h2>
+    <ng-content></ng-content>
+  </div>
+</div>
