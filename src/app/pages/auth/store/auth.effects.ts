@@ -114,6 +114,9 @@ export class AuthEffects {
       ).pipe(
         tap(resData => {
           this.authService.setRefreshTimer(new Date(resData.expirationDate));
+          if (this.router.url.match(/auth/g)) {
+            this.router.navigate(['/home']);
+          }
         }),
         map(resData => {
           return handleIdTokenRefresh(resData);
