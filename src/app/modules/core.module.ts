@@ -7,11 +7,11 @@ const declarations = [
 ];
 
 @NgModule({
-  imports: [
-    MaterialModule
-  ],
   declarations,
   providers: [],
-  exports: declarations
+  exports: [
+    ...declarations,
+    MaterialModule
+  ]
 })
 export class CoreModule {}
