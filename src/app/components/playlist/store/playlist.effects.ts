@@ -11,7 +11,6 @@ import { PlayerService } from '@player/player.service';
 import { HttpClient } from '@angular/common/http';
 import { Track } from '@entities/track.model';
 import { environment } from '@src/environments/environment.prod';
-import { AngularFireStorage } from '@angular/fire/storage';
 
 const demoPlaylistURL = 'http://localhost:3000/audio/demo-playlist';
 
@@ -21,8 +20,7 @@ export class PlaylistEffects {
     private actions$: Actions,
     private store: Store<fromApp.AppState>,
     private playerService: PlayerService,
-    private http: HttpClient,
-    private fireStorage: AngularFireStorage
+    private http: HttpClient
   ) {}
 
   @Effect()
