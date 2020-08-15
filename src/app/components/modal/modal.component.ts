@@ -18,4 +18,8 @@ export class ModalComponent implements OnInit {
     this.hide.emit();
   }
 
+  stopPropagation(event: Event) {
+    event.stopPropagation();
+  }
+
 }
