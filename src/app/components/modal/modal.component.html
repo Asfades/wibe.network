@@ -1,10 +1,17 @@
-<div class="overlay" (click)="hideModal()">
+<div
+  class="overlay"
+  (click)="hideModal()"
+  (mousedown)="onMouseDown()"
+>
   <button
     class="close"
     title="close"
-    (click)="hideModal()"
   >Close</button>
-  <div class="card" (click)="stopPropagation($event)">
+  <div
+    class="card"
+    (click)="stopPropagation($event)"
+    (mousedown)="stopPropagation($event)"
+  >
     <h2>{{ title }}</h2>
     <ng-content></ng-content>
   </div>
