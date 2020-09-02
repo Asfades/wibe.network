@@ -1,2 +1,82 @@
-<p>profile works!</p>
-<router-outlet></router-outlet>
+<div
+  *ngIf="$profile | async as profile"
+  [ngClass]="{ 'personal': personalPage | async }"
+>
+  <input #fileInput type="file" (change)="fileChangeEvent($event.target.files[0])" hidden />
+  <div class="profile-background">
+    <div
+      class="avatar-container"
+      (click)="onShowModal($event, profileModals.Avatar)"
+    >
+      <div class="avatar">
+        <ng-container >
+          <img
+            *ngIf="profile.avatar"
+            [src]="profile.avatar"
+            alt="avatar"
+          >
+          <div
+            *ngIf="!profile.avatar"
+            style="height: 50px; background: black;">
+          </div>
+        </ng-container>
+      </div>
+      <button
+        *ngIf="personalPage | async"
+        class="upload-btn"
+        mat-button
+        (click)="onShowModal($event, profileModals.UploadAvatar)"
+      >
+        <mat-icon mat-list-icon>camera_alt</mat-icon>
+        Upload image
+      </button>
+    </div>
+    <div class="profile-header">
+      <h1>{{ $username | async }}</h1>
+    </div>
+  </div>
+  <div
+    *ngIf="showModal && personalPage | async"
+    class="modal-coordinator"
+  >
+    <app-modal
+      [title]="$username | async"
+      (hide)="onHideModal()"
+    >
+      <ng-container [ngSwitch]="activeModal">
+        <div *ngSwitchCase="profileModals.Avatar">
+          <img
+            *ngIf="profile.avatar"
+            [src]="profile.avatar"
+            alt="avatar"
+            class="avatar-img"
+          >
+          <div
+            *ngIf="!profile.avatar"
+            style="height: 50px; background: black;">
+          </div>
+        </div>
+        <div *ngSwitchCase="profileModals.UploadAvatar">
+          For best results, upload images of at least 1000x1000 pixels. 2MB file-size limit.
+          <app-image-cropper
+            [imageFile]="originalImageFile"
+            [width]="500"
+            [height]="500"
+            [zoom$]="zoomValue$"
+            (blobImage)="onBlobImage($event)"
+          ></app-image-cropper>
+          <mat-slider
+            min="0"
+            [max]="maxSteps"
+            step="1"
+            (input)="onZoomChange($event)"
+          >
+            zoom
+          </mat-slider>
+          <button mat-button (click)="saveImage()">Save</button>
+        </div>
+      </ng-container>
+    </app-modal>
+  </div>
+  <router-outlet></router-outlet>
+</div>
