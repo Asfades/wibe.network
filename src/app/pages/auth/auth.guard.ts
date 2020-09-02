@@ -29,4 +29,27 @@ export class AuthGuard implements CanActivate {
        })
      );
   }
+
+}
+
+@Injectable({providedIn: 'root'})
+export class AlreadySignedGuard implements CanActivate {
+  constructor(
+    private store: Store<fromApp.AppState>,
+    private router: Router
+  ) {}
+
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    routerState: RouterStateSnapshot
+  ): boolean | UrlTree | Promise<boolean | UrlTree> | Observable<boolean | UrlTree> {
+     return this.store.select('auth').pipe(
+       take(1),
+       map(authState => authState.user),
+       map(user => {
+         return !user || this.router.createUrlTree(['/home']);
+       })
+     );
+  }
+
 }

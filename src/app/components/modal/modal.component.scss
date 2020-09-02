@@ -1,0 +1,39 @@
+.overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(252, 252, 252, 0.9);
+  z-index: 10;
+  padding-top: 76px;
+  overflow: scroll;
+}
+
+.close {
+  width: 20px;
+  height: 20px;
+  background: url("/assets/icons/close.svg");
+  border: none;
+  overflow: hidden;
+  text-indent: 20px;
+  cursor: pointer;
+  position: absolute;
+  top: 14px;
+  right: 20px;
+}
+
+.card {
+  background: white;
+  box-shadow: 2px 2px 5px 2px #ccc;
+  width: 550px;
+  height: auto;
+  padding: 25px;
+  margin: 0 auto;
+
+  h2 {
+    border-bottom: 1px solid #f2f2f2;
+    margin-bottom: 24px;
+  }
+}
+

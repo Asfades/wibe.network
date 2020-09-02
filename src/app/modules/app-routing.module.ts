@@ -3,14 +3,15 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 import { AuthComponent } from '../pages/auth/auth.component';
 import { HomeComponent } from '../pages/home/home.component';
-import { AuthGuard } from '../pages/auth/auth.guard';
+import { AuthGuard, AlreadySignedGuard } from '../pages/auth/auth.guard';
 import { NotFoundComponent } from '../pages/not-found/not-found.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
     path: 'auth',
-    component: AuthComponent
+    component: AuthComponent,
+    canActivate: [AlreadySignedGuard]
   },
   {
     path: 'home',

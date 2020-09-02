@@ -1,0 +1,63 @@
+.avatar {
+  border-radius: 100%;
+  background: lightblue;
+  overflow: hidden;
+  height: 100%;
+}
+
+.avatar img,
+.avatar-img {
+  width: 100%;
+}
+
+.avatar-container {
+  width: 180px;
+  height: 180px;
+  position: relative;
+
+  &:hover .upload-btn {
+    display: block;
+  }
+}
+
+.profile-background {
+  padding: 10px;
+  background: gray;
+  height: 200px;
+  display: flex;
+}
+
+.profile-header {
+  padding: 30px;
+
+  h1 {
+    color: white;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 5px;
+  }
+}
+
+.personal {
+  .avatar,
+  .profile-background {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.upload-btn {
+  display: none;
+  background: rgba(251, 251, 251, 0.9);
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  line-height: 26px;
+}
+
+.modal-coordinator {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 11;
+}

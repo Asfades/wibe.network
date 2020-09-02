@@ -1,0 +1,12 @@
+<div
+  class="cropper"
+  [ngStyle]="{
+    'background-image': backgroundBase64Source$ | async,
+    'background-position': backgroundPositionString$ | async,
+    'background-size': backgroundSizeString$ | async,
+    'height': height + 'px',
+    'width': width + 'px'
+  }"
+  (mousedown)="onMouseDown($event)"
+>
+</div>

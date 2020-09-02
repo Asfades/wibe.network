@@ -8,9 +8,6 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireStorageModule } from '@angular/fire/storage';
-
 import { MaterialModule } from './modules/material.module';
 import { AppRoutingModule } from './modules/app-routing.module';
 import { environment } from '../environments/environment';
@@ -55,8 +52,6 @@ import { ProfileModule } from './pages/profile/profile.module';
     StoreModule.forRoot(fromApp.appReducer, { metaReducers: fromApp.metaReducers }),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
     EffectsModule.forRoot([PlaylistEffects, AuthEffects]),
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule
   ],
   providers: [
     {

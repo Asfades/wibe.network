@@ -1,25 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import {
   CanActivate,
   UrlTree,
   RouterStateSnapshot,
   ActivatedRouteSnapshot,
   Router,
-  CanActivateChild
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NotFoundService } from '../not-found/not-found.service';
-
-const usersEndpoint = 'https://wibe-network.firebaseio.com/users';
+import { ProfileService } from './profile.service';
 
 @Injectable({providedIn: 'root'})
 export class ActivateProfileGuard implements CanActivate {
   constructor(
-    private httpClient: HttpClient,
     private router: Router,
-    private notFoundService: NotFoundService
+    private notFoundService: NotFoundService,
+    private profileService: ProfileService
   ) {}
 
   canActivate(
@@ -27,13 +24,9 @@ export class ActivateProfileGuard implements CanActivate {
     routerSnapshot: RouterStateSnapshot
   ): Observable<boolean | UrlTree> {
     const name = route.params.name;
-    return this.httpClient.get(`${usersEndpoint}/${name}.json`, {
-      params: {
-        shallow: 'true'
-      }
-    })
+    return this.profileService.getUser(name)
       .pipe(map(res => {
-        if (!!res) {
+        if (res) {
           return true;
         } else {
           this.notFoundService.setUsername(name);

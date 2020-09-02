@@ -19,10 +19,24 @@ nav {
 
   &>div {
     height: 100%;
+    display: flex;
   }
 
   button {
     height: 100%;
     color: whitesmoke;
+  }
+
+  .profile-menu-wrapper {
+    position: relative;
+  }
+
+  .profile-menu {
+    background: #3A546E;
+    border: 1px solid #ccc;
+    border-top: 0;
+    position: absolute;
+    left: 0;
+    top: 100%;
   }
 }
