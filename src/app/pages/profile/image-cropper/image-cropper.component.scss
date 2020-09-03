@@ -1,5 +1,27 @@
 
+.wrapper {
+  position: relative;
+}
+
+.background::before {
+  background-color: hsla(0,0%,100%,.7);
+  content: "";
+}
+
+.background::before,
+.cropper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
 .cropper {
   cursor: move;
   background-repeat: no-repeat;
+
+  &.round {
+    border-radius: 100%;
+  }
 }

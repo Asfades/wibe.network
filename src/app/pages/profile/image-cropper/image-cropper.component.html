@@ -1,12 +1,33 @@
 <div
-  class="cropper"
+  class="wrapper"
   [ngStyle]="{
-    'background-image': backgroundBase64Source$ | async,
-    'background-position': backgroundPositionString$ | async,
-    'background-size': backgroundSizeString$ | async,
     'height': height + 'px',
     'width': width + 'px'
   }"
-  (mousedown)="onMouseDown($event)"
 >
+  <div
+    class="background"
+    *ngIf="round"
+    [ngStyle]="{
+      'background-image': backgroundBase64Source$ | async,
+      'background-position': backgroundPositionString$ | async,
+      'background-size': backgroundSizeString$ | async,
+      'height': height + 'px',
+      'width': width + 'px'
+    }"
+  >
+  </div>
+  <div
+    class="cropper"
+    [ngClass]="{'round': round}"
+    [ngStyle]="{
+      'background-image': backgroundBase64Source$ | async,
+      'background-position': backgroundPositionString$ | async,
+      'background-size': backgroundSizeString$ | async,
+      'height': height + 'px',
+      'width': width + 'px'
+    }"
+    (mousedown)="onMouseDown($event)"
+  >
+  </div>
 </div>
