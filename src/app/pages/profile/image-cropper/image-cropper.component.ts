@@ -19,6 +19,7 @@ export class ImageCropperComponent implements OnInit {
   @Input() width: number;
   @Input() height: number;
   @Input() zoom$: Observable<number>;
+  @Input() round: boolean;
 
   @Output() blobImage = new EventEmitter<string>();
 
