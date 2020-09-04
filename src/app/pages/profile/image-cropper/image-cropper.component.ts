@@ -7,7 +7,15 @@ import {
   HostListener,
 } from '@angular/core';
 import { Observable, Subject, combineLatest, of } from 'rxjs';
-import { map, concatMap, shareReplay, pairwise, withLatestFrom, tap } from 'rxjs/operators';
+import {
+  map,
+  concatMap,
+  shareReplay,
+  pairwise,
+  withLatestFrom,
+  tap,
+  startWith
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-image-cropper',
@@ -30,12 +38,17 @@ export class ImageCropperComponent implements OnInit {
   private picturePressed = false;
   private lastPosition = new Coordinates(0, 0);
 
-  backgroundBase64Source$: Observable<string>;
-  backgroundSizeString$: Observable<string>;
   private backgroundPosition$: Observable<Coordinates>;
-  backgroundPositionString$: Observable<string>;
   private cursorPosition$ = new Subject<Coordinates>();
   private emitImage$: Observable<any>;
+  private backgroundBase64Source$: Observable<string>;
+  private backgroundSizeString$: Observable<string>;
+  private backgroundPositionString$: Observable<string>;
+  backgroundParameters$: Observable<{
+    source: string,
+    size: string,
+    position: string
+  }>;
 
   constructor() { }
 
@@ -77,6 +90,7 @@ export class ImageCropperComponent implements OnInit {
 
         this.img.src = base64Image;
       })),
+      startWith(new Resolution(0, 0)),
       shareReplay(1)
     );
 
@@ -122,6 +136,7 @@ export class ImageCropperComponent implements OnInit {
     );
 
     this.backgroundPosition$ = this.cursorPosition$.pipe(
+      startWith(new Coordinates(0, 0), new Coordinates(0, 0)),
       pairwise(),
       map(([previousCoordinates, currentCoordinates]) => {
         if (!previousCoordinates || !currentCoordinates) {
@@ -169,6 +184,14 @@ export class ImageCropperComponent implements OnInit {
         );
         this.blobImage.emit(this.canvas.toDataURL());
       })
+    );
+
+    this.backgroundParameters$ = combineLatest([
+      this.backgroundBase64Source$,
+      this.backgroundSizeString$,
+      this.backgroundPositionString$
+    ]).pipe(
+      map(([source, size, position]) => ({source, size, position}))
     );
   }
 
