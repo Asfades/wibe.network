@@ -71,7 +71,9 @@ export class ProfileComponent implements OnInit {
       headers: {
         'Content-Type': 'application/octet-stream'
       }
-    }).subscribe();
+    }).subscribe({
+      next: () => this.onHideModal()
+    });
   }
 
   onShowModal(event: Event, type: ProfileModals) {
