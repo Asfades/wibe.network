@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit {
   activeModal: ProfileModals;
 
   originalImageFile: File;
-  imageBlob: string;
+  base64Image: string;
 
   zoomValue$ = new BehaviorSubject(0);
   maxSteps = 50;
@@ -60,19 +60,16 @@ export class ProfileComponent implements OnInit {
   }
 
   onBlobImage(image: string) {
-    this.imageBlob = image;
+    this.base64Image = image;
   }
 
-  saveImage() {
+  saveAvatar() {
     this.cropper.emitImage();
-    const data = new FormData();
-    data.set('image', makeblob(this.imageBlob));
-    this.http.post('http://localhost:3000/users/exmail/avatar', data, {
-      headers: {
-        'Content-Type': 'application/octet-stream'
+    this.profileService.saveAvatar(this.base64Image).subscribe({
+      next: () => {
+        this.profileService.profileData.next({ avatar: this.base64Image });
+        this.onHideModal();
       }
-    }).subscribe({
-      next: () => this.onHideModal()
     });
   }
 
@@ -103,29 +100,4 @@ export enum ProfileModals {
   Avatar,
   UploadAvatar,
   UploadBackground
-}
-
-function makeblob(dataURL) {
-  const BASE64_MARKER = ';base64,';
-  let raw;
-  let contentType;
-  let parts;
-  if (dataURL.indexOf(BASE64_MARKER) === -1) {
-      parts = dataURL.split(',');
-      contentType = parts[0].split(':')[1];
-      raw = decodeURIComponent(parts[1]);
-      return new Blob([raw], { type: contentType });
-  }
-  parts = dataURL.split(BASE64_MARKER);
-  contentType = parts[0].split(':')[1];
-  raw = window.atob(parts[1]);
-  const rawLength = raw.length;
-
-  const uInt8Array = new Uint8Array(rawLength);
-
-  for (let i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i);
-  }
-
-  return new Blob([uInt8Array], { type: contentType });
 }
