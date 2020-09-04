@@ -66,15 +66,24 @@
             [round]="true"
             (blobImage)="onBlobImage($event)"
           ></app-image-cropper>
-          <mat-slider
-            min="0"
-            [max]="maxSteps"
-            step="1"
-            (input)="onZoomChange($event)"
-          >
-            zoom
-          </mat-slider>
-          <button mat-button (click)="saveImage()">Save</button>
+          <div class="controls">
+            <div class="slider-wrapper">
+              <span>–</span>
+              <mat-slider
+                min="0"
+                step="1"
+                [max]="maxSteps"
+                (input)="onZoomChange($event)"
+              >
+                zoom
+              </mat-slider>
+              <span>+</span>
+            </div>
+            <div>
+              <button mat-button (click)="onHideModal()">Cancel</button>
+              <button mat-flat-button (click)="saveImage()" color="primary">Save</button>
+            </div>
+          </div>
         </div>
       </ng-container>
     </app-modal>
