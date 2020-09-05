@@ -136,7 +136,6 @@ export class ImageCropperComponent implements OnInit {
     );
 
     this.backgroundPosition$ = this.cursorPosition$.pipe(
-      startWith(new Coordinates(0, 0), new Coordinates(0, 0)),
       pairwise(),
       map(([previousCoordinates, currentCoordinates]) => {
         if (!previousCoordinates || !currentCoordinates) {
@@ -159,6 +158,7 @@ export class ImageCropperComponent implements OnInit {
       map(([coordinates, size]) => {
         return this.validateBackgroundPosition(coordinates, size);
       }),
+      startWith(new Coordinates(0, 0)),
       shareReplay(1)
     );
 
