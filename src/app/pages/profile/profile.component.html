@@ -35,9 +35,8 @@
       <h1>{{ $username | async }}</h1>
     </div>
   </div>
-  <div
+  <ng-container
     *ngIf="showModal && personalPage | async"
-    class="modal-coordinator"
   >
     <app-modal
       [title]="$username | async"
@@ -87,6 +86,6 @@
         </div>
       </ng-container>
     </app-modal>
-  </div>
+  </ng-container>
   <router-outlet></router-outlet>
 </div>
