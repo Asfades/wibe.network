@@ -1,17 +1,23 @@
 import { NgModule } from '@angular/core';
-import { ModalComponent } from '../components/modal/modal.component';
+import { CommonModule } from '@angular/common';
 import { MaterialModule } from './material.module';
+
+import { ModalComponent } from '../components/modal/modal.component';
 
 const declarations = [
   ModalComponent
 ];
 
 @NgModule({
+  imports: [
+    CommonModule
+  ],
   declarations,
   providers: [],
   exports: [
     ...declarations,
-    MaterialModule
+    MaterialModule,
+    CommonModule
   ]
 })
 export class CoreModule {}
