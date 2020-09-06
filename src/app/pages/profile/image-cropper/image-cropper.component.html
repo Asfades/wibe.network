@@ -1,33 +1,37 @@
-<div
-  class="wrapper"
-  [ngStyle]="{
-    'height': height + 'px',
-    'width': width + 'px'
-  }"
+<ng-container
+  *ngIf="backgroundParameters$ | async as parameters"
 >
   <div
-    class="background"
-    *ngIf="round"
+    class="wrapper"
     [ngStyle]="{
-      'background-image': backgroundBase64Source$ | async,
-      'background-position': backgroundPositionString$ | async,
-      'background-size': backgroundSizeString$ | async,
       'height': height + 'px',
       'width': width + 'px'
     }"
   >
+    <div
+      class="background"
+      *ngIf="round"
+      [ngStyle]="{
+        'background-image': parameters.source,
+        'background-position': parameters.position,
+        'background-size': parameters.size,
+        'height': height + 'px',
+        'width': width + 'px'
+      }"
+    >
+    </div>
+    <div
+      class="cropper"
+      [ngClass]="{'round': round}"
+      [ngStyle]="{
+        'background-image': parameters.source,
+        'background-position': parameters.position,
+        'background-size': parameters.size,
+        'height': height + 'px',
+        'width': width + 'px'
+      }"
+      (mousedown)="onMouseDown($event)"
+    >
+    </div>
   </div>
-  <div
-    class="cropper"
-    [ngClass]="{'round': round}"
-    [ngStyle]="{
-      'background-image': backgroundBase64Source$ | async,
-      'background-position': backgroundPositionString$ | async,
-      'background-size': backgroundSizeString$ | async,
-      'height': height + 'px',
-      'width': width + 'px'
-    }"
-    (mousedown)="onMouseDown($event)"
-  >
-  </div>
-</div>
+</ng-container>

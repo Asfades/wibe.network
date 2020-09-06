@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 import { of, Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { ProfileService, ProfileData } from './profile.service';
-import { HttpClient } from '@angular/common/http';
 import { ImageCropperComponent } from './image-cropper/image-cropper.component';
 
 @Component({
@@ -18,60 +17,65 @@ export class ProfileComponent implements OnInit {
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef<HTMLInputElement>;
   @ViewChild(ImageCropperComponent, { static: false }) cropper: ImageCropperComponent;
 
-  $profile: Observable<ProfileData>;
-  personalPage = of(false);
-  $username = of('');
+  profile$: Observable<ProfileData>;
+  personalPage$ = of(false);
+  username$ = of('');
   showModal = false;
   profileModals = ProfileModals;
   activeModal: ProfileModals;
+  modalWidth: number;
 
   originalImageFile: File;
-  imageBlob: string;
-
+  base64Image: string;
   zoomValue$ = new BehaviorSubject(0);
   maxSteps = 50;
-
-  mouseIsDown = false;
-
-  croppedImage: any = '';
 
   constructor(
     private store: Store<fromApp.AppState>,
     private router: Router,
-    private profileService: ProfileService,
-    private http: HttpClient
+    private profileService: ProfileService
   ) { }
 
   ngOnInit(): void {
-    this.personalPage = this.store.select('auth').pipe(
+    this.personalPage$ = this.store.select('auth').pipe(
       map(state => state.user),
       map(user => this.router.url === `/${user.username}`)
     );
 
-    this.$username = this.store.select('auth').pipe(
+    this.username$ = this.store.select('auth').pipe(
       map(state => state.user.username)
     );
 
-    this.$profile = this.profileService.profileData;
+    this.profile$ = this.profileService.profileData;
   }
 
   onHideModal() {
     this.showModal = false;
+    this.zoomValue$.next(0);
   }
 
   onBlobImage(image: string) {
-    this.imageBlob = image;
+    this.base64Image = image;
   }
 
-  saveImage() {
+  saveAvatar() {
     this.cropper.emitImage();
-    const data = new FormData();
-    data.set('image', makeblob(this.imageBlob));
-    this.http.post('http://localhost:3000/users/exmail/avatar', data, {
-      headers: {
-        'Content-Type': 'application/octet-stream'
+    this.profileService.saveAvatar(this.base64Image).subscribe({
+      next: () => {
+        this.profileService.profileData.next({ avatar: this.base64Image });
+        this.onHideModal();
       }
-    }).subscribe();
+    });
+  }
+
+  saveBackground() {
+    this.cropper.emitImage();
+    this.profileService.saveBackground(this.base64Image).subscribe({
+      next: () => {
+        this.profileService.profileData.next({ avatar: this.base64Image });
+        this.onHideModal();
+      }
+    });
   }
 
   onShowModal(event: Event, type: ProfileModals) {
@@ -79,10 +83,17 @@ export class ProfileComponent implements OnInit {
     this.activeModal = type;
     switch (type) {
       case ProfileModals.Avatar:
+        this.modalWidth = 550;
         this.showModal = true;
         break;
       case ProfileModals.UploadAvatar:
         this.fileInput.nativeElement.click();
+        this.modalWidth = 550;
+        break;
+      case ProfileModals.UploadBackground:
+        this.fileInput.nativeElement.click();
+        this.modalWidth = 900;
+        break;
     }
   }
 
@@ -101,29 +112,4 @@ export enum ProfileModals {
   Avatar,
   UploadAvatar,
   UploadBackground
-}
-
-function makeblob(dataURL) {
-  const BASE64_MARKER = ';base64,';
-  let raw;
-  let contentType;
-  let parts;
-  if (dataURL.indexOf(BASE64_MARKER) === -1) {
-      parts = dataURL.split(',');
-      contentType = parts[0].split(':')[1];
-      raw = decodeURIComponent(parts[1]);
-      return new Blob([raw], { type: contentType });
-  }
-  parts = dataURL.split(BASE64_MARKER);
-  contentType = parts[0].split(':')[1];
-  raw = window.atob(parts[1]);
-  const rawLength = raw.length;
-
-  const uInt8Array = new Uint8Array(rawLength);
-
-  for (let i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i);
-  }
-
-  return new Blob([uInt8Array], { type: contentType });
 }

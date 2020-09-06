@@ -1,9 +1,9 @@
 <div
-  *ngIf="$profile | async as profile"
-  [ngClass]="{ 'personal': personalPage | async }"
+  *ngIf="profile$ | async as profile"
+  [ngClass]="{ 'personal': personalPage$ | async }"
 >
   <input #fileInput type="file" (change)="fileChangeEvent($event.target.files[0])" hidden />
-  <div class="profile-background">
+  <div class="profile-header">
     <div
       class="avatar-container"
       (click)="onShowModal($event, profileModals.Avatar)"
@@ -22,7 +22,7 @@
         </ng-container>
       </div>
       <button
-        *ngIf="personalPage | async"
+        *ngIf="personalPage$ | async"
         class="upload-btn"
         mat-button
         (click)="onShowModal($event, profileModals.UploadAvatar)"
@@ -31,17 +31,26 @@
         Upload image
       </button>
     </div>
-    <div class="profile-header">
-      <h1>{{ $username | async }}</h1>
+    <div class="profile-heading">
+      <h1>{{ username$ | async }}</h1>
     </div>
+    <button
+      *ngIf="personalPage$ | async"
+      class="upload-btn"
+      mat-button
+      (click)="onShowModal($event, profileModals.UploadBackground)"
+    >
+      <mat-icon mat-list-icon>camera_alt</mat-icon>
+      Upload image
+    </button>
   </div>
-  <div
-    *ngIf="showModal && personalPage | async"
-    class="modal-coordinator"
+  <ng-container
+    *ngIf="showModal && personalPage$ | async"
   >
     <app-modal
-      [title]="$username | async"
+      [title]="username$ | async"
       (hide)="onHideModal()"
+      [width]="modalWidth"
     >
       <ng-container [ngSwitch]="activeModal">
         <div *ngSwitchCase="profileModals.Avatar">
@@ -53,7 +62,8 @@
           >
           <div
             *ngIf="!profile.avatar"
-            style="height: 50px; background: black;">
+            style="height: 50px; background: black;"
+          >
           </div>
         </div>
         <div *ngSwitchCase="profileModals.UploadAvatar">
@@ -66,18 +76,56 @@
             [round]="true"
             (blobImage)="onBlobImage($event)"
           ></app-image-cropper>
-          <mat-slider
-            min="0"
-            [max]="maxSteps"
-            step="1"
-            (input)="onZoomChange($event)"
-          >
-            zoom
-          </mat-slider>
-          <button mat-button (click)="saveImage()">Save</button>
+          <div class="controls">
+            <div class="slider-wrapper">
+              <span>–</span>
+              <mat-slider
+                min="0"
+                step="1"
+                [max]="maxSteps"
+                (input)="onZoomChange($event)"
+              >
+                zoom
+              </mat-slider>
+              <span>+</span>
+            </div>
+            <div>
+              <button mat-button (click)="onHideModal()">Cancel</button>
+              <button mat-flat-button (click)="saveAvatar()" color="primary">Save</button>
+            </div>
+          </div>
+        </div>
+        <div *ngSwitchCase="profileModals.UploadBackground">
+          <p>For best results, upload PNG or JPG images of at least 2480x520 pixels. 2MB file-size limit. Avoid using text within your header image, as it will be cropped on smaller screens.</p>
+          <app-image-cropper
+              [imageFile]="originalImageFile"
+              [width]="850"
+              [height]="178"
+              [zoom$]="zoomValue$"
+              (blobImage)="onBlobImage($event)"
+            >
+          </app-image-cropper>
+          <div class="controls">
+            <div class="slider-wrapper">
+              <span>–</span>
+              <mat-slider
+                min="0"
+                step="1"
+                [max]="maxSteps"
+                (input)="onZoomChange($event)"
+              >
+                zoom
+              </mat-slider>
+              <span>+</span>
+            </div>
+            <div>
+              <button mat-button (click)="onHideModal()">Cancel</button>
+              <button mat-flat-button (click)="saveBackground()" color="primary">Save</button>
+            </div>
+          </div>
         </div>
       </ng-container>
     </app-modal>
-  </div>
+  </ng-container>
   <router-outlet></router-outlet>
 </div>

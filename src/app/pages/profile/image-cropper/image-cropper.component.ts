@@ -7,7 +7,15 @@ import {
   HostListener,
 } from '@angular/core';
 import { Observable, Subject, combineLatest, of } from 'rxjs';
-import { map, concatMap, shareReplay, pairwise, withLatestFrom, tap } from 'rxjs/operators';
+import {
+  map,
+  concatMap,
+  shareReplay,
+  pairwise,
+  withLatestFrom,
+  tap,
+  startWith
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-image-cropper',
@@ -30,12 +38,17 @@ export class ImageCropperComponent implements OnInit {
   private picturePressed = false;
   private lastPosition = new Coordinates(0, 0);
 
-  backgroundBase64Source$: Observable<string>;
-  backgroundSizeString$: Observable<string>;
   private backgroundPosition$: Observable<Coordinates>;
-  backgroundPositionString$: Observable<string>;
   private cursorPosition$ = new Subject<Coordinates>();
   private emitImage$: Observable<any>;
+  private backgroundBase64Source$: Observable<string>;
+  private backgroundSizeString$: Observable<string>;
+  private backgroundPositionString$: Observable<string>;
+  backgroundParameters$: Observable<{
+    source: string,
+    size: string,
+    position: string
+  }>;
 
   constructor() { }
 
@@ -85,13 +98,11 @@ export class ImageCropperComponent implements OnInit {
       this.zoom$ || of(0)
     ]).pipe(
       map(([resolution, zoom]) => {
-        const minResolutionSide = Math.min(resolution.width, resolution.height);
-        const minPicSize = Math.min(this.width, this.height);
-        const initial = minResolutionSide / minPicSize;
+        const initial = Math.min(resolution.width / this.width, resolution.height / this.height);
         const zoomed = initial - (initial - 1) * zoom; // the min value is 1
 
-        this.canvas.width = minPicSize * zoomed;
-        this.canvas.height = minPicSize * zoomed;
+        this.canvas.width = this.width * zoomed;
+        this.canvas.height = this.height * zoomed;
 
         return {
           initial,
@@ -144,6 +155,7 @@ export class ImageCropperComponent implements OnInit {
       map(([coordinates, size]) => {
         return this.validateBackgroundPosition(coordinates, size);
       }),
+      startWith(new Coordinates(0, 0)),
       shareReplay(1)
     );
 
@@ -169,6 +181,14 @@ export class ImageCropperComponent implements OnInit {
         );
         this.blobImage.emit(this.canvas.toDataURL());
       })
+    );
+
+    this.backgroundParameters$ = combineLatest([
+      this.backgroundBase64Source$,
+      this.backgroundSizeString$,
+      this.backgroundPositionString$
+    ]).pipe(
+      map(([source, size, position]) => ({source, size, position}))
     );
   }
 
