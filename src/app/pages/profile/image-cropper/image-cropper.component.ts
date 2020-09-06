@@ -90,7 +90,6 @@ export class ImageCropperComponent implements OnInit {
 
         this.img.src = base64Image;
       })),
-      startWith(new Resolution(0, 0)),
       shareReplay(1)
     );
 
@@ -99,13 +98,11 @@ export class ImageCropperComponent implements OnInit {
       this.zoom$ || of(0)
     ]).pipe(
       map(([resolution, zoom]) => {
-        const minResolutionSide = Math.min(resolution.width, resolution.height);
-        const minPicSize = Math.min(this.width, this.height);
-        const initial = minResolutionSide / minPicSize;
+        const initial = Math.min(resolution.width / this.width, resolution.height / this.height);
         const zoomed = initial - (initial - 1) * zoom; // the min value is 1
 
-        this.canvas.width = minPicSize * zoomed;
-        this.canvas.height = minPicSize * zoomed;
+        this.canvas.width = this.width * zoomed;
+        this.canvas.height = this.height * zoomed;
 
         return {
           initial,
