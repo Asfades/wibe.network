@@ -1,0 +1,49 @@
+.upload-item {
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  margin-top: 5px;
+
+  &__info-wrapper {
+    padding: 5px 10px;
+  }
+
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  
+    &>span {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__track-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+    & mat-form-field:first-child {
+      margin-right: 20px;
+    }
+  }
+
+  &__button {
+    margin-left: 5px;
+    width: 80px;
+  }
+
+  &__filename-caption {
+    font-weight: bold;
+  }
+
+  &__load-caption {
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+
+    &>span {
+      font-weight: bold;
+    }
+  }
+}

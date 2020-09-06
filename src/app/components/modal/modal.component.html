@@ -1,0 +1,21 @@
+<div
+  class="overlay"
+  (click)="hideModal()"
+  (mousedown)="onMouseDown()"
+>
+  <button
+    class="close"
+    title="close"
+  >Close</button>
+  <div
+    class="card"
+    [ngStyle]="{
+      'width': width + 'px'
+    }"
+    (click)="stopPropagation($event)"
+    (mousedown)="stopPropagation($event)"
+  >
+    <h2>{{ title }}</h2>
+    <ng-content></ng-content>
+  </div>
+</div>

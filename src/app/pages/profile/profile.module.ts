@@ -1,19 +1,24 @@
 import { NgModule } from '@angular/core';
-import { ProfileComponent } from './profile.component';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ActivateProfileGuard } from './activateProfile.guard';
-import { TracksComponent } from './tracks/tracks.component';
 
-const declarations = [
+import { CoreModule } from '@src/app/modules/core.module';
+import { ActivateProfileGuard } from './activateProfile.guard';
+import { ProfileComponent } from './profile.component';
+import { TracksComponent } from './tracks/tracks.component';
+import { ImageCropperComponent } from './image-cropper/image-cropper.component';
+
+const components = [
   ProfileComponent,
-  TracksComponent
+  TracksComponent,
+  ImageCropperComponent
 ];
 
 @NgModule({
-  declarations,
+  declarations: [
+    ...components
+  ],
   imports: [
-    CommonModule,
+    CoreModule,
     RouterModule.forChild([
       {
         path: '',
@@ -28,6 +33,8 @@ const declarations = [
       }
     ])
   ],
-  exports: declarations,
+  exports: [
+    ...components
+  ],
 })
 export class ProfileModule {}

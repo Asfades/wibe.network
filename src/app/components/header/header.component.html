@@ -2,30 +2,49 @@
   <nav>
     <div></div>
     <div>
-      <!-- <button
-        mat-button
-        (click)="test()"
-      >Test</button> -->
-      <button
-        mat-button
-        routerLink="/home"
-        *ngIf="isAuthenticated"
-      >Home</button>
-      <button
-        mat-button
-        routerLink="/auth"
-        *ngIf="!isAuthenticated"
-      >Authenticate</button>
-      <button
-        mat-button
-        routerLink="/upload"
-        *ngIf="isAuthenticated"
-      >Upload</button>
-      <button
-        mat-button
-        (click)="logout()"
-        *ngIf="isAuthenticated"
-      >Logout</button>
+      <ng-container
+        *ngIf="$username | async as name"
+      >
+        <button
+          mat-button
+          routerLink="/home"
+          *ngIf="name"
+        >Home</button>
+        <button
+          mat-button
+          routerLink="/auth"
+          *ngIf="!name"
+        >Authenticate</button>
+        <button
+          mat-button
+          routerLink="/upload"
+          *ngIf="name"
+        >Upload</button>
+        <div
+          
+          class="profile-menu-wrapper"
+        >
+          <button
+            mat-button
+            (click)="toggleProfileMenu()"
+          >
+            {{ name }}
+          </button>
+          <div
+            *ngIf="profileMenuOpened"
+            class="profile-menu"
+          >
+            <button
+              mat-button
+              [routerLink]="name"
+            >Profile</button>
+            <button
+              mat-button
+              (click)="logout()"
+            >Logout</button>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </nav>
 </header>

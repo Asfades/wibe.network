@@ -1,0 +1,92 @@
+.avatar {
+  border-radius: 100%;
+  background: lightblue;
+  overflow: hidden;
+  height: 100%;
+}
+
+.avatar img,
+.avatar-img {
+  width: 100%;
+}
+
+.upload-btn {
+  background: rgba(251, 251, 251, 0.9);
+  line-height: 26px;
+  width: 160px;
+}
+
+.avatar-container {
+  width: 200px;
+  height: 200px;
+  position: relative;
+
+  & .upload-btn {
+    display: none;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+  }
+
+  &:hover .upload-btn {
+    display: block;
+  }
+}
+
+.profile-header {
+  padding: 30px;
+  background: gray;
+  background-size: 1240px;
+  height: 260px;
+  display: flex;
+  position: relative;
+
+  & > .upload-btn {
+    display: none;
+    position: absolute;
+    right: 30px;
+  }
+
+  &:hover > .upload-btn {
+    display: block;
+  }
+}
+
+.profile-heading {
+  padding: 30px;
+
+  h1 {
+    color: white;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 5px;
+  }
+}
+
+.personal {
+  .avatar,
+  .profile-header {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.slider-wrapper {
+  span {
+    vertical-align: middle;
+
+    &:first-child {
+      padding-right: 5px;
+    }
+
+    &:last-child {
+      padding-left: 5px;
+    }
+  }
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}

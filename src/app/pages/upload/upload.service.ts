@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, finalize } from 'rxjs/operators';
 import { concat, of } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
@@ -50,6 +50,7 @@ export class UploadService {
 
   confirmFile(data: { artist: string, name: string, uploadState: UploadState, index: number }) {
     const { artist, name, uploadState, index } = data;
+    let uploadedState;
     const payload = {
       name: `${artist} - ${name}`,
       genres: ['rap', 'hip-hop']
@@ -63,7 +64,13 @@ export class UploadService {
         }
       ).pipe(
         tap((response) => console.log(response)),
-        map(() => ({ ...uploadState, status: UploadStatus.Saved }))
+        map(() => {
+          uploadedState = { ...uploadState, status: UploadStatus.Saved };
+          return uploadedState;
+        }),
+        finalize(() => {
+          this.uploads[index] = of(uploadedState);
+        })
       )
     );
   }
