@@ -7,6 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ModalComponent implements OnInit {
   @Input() title: string;
+  @Input() width: number;
   @Output() hide = new EventEmitter<void>();
 
   mouseDownOnOverlay = false;

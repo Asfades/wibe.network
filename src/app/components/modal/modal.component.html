@@ -9,6 +9,9 @@
   >Close</button>
   <div
     class="card"
+    [ngStyle]="{
+      'width': width + 'px'
+    }"
     (click)="stopPropagation($event)"
     (mousedown)="stopPropagation($event)"
   >
