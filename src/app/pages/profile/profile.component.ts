@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromApp from '@store/app.reducer';
-import { map } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { of, Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { ProfileService, ProfileData } from './profile.service';
@@ -60,9 +60,11 @@ export class ProfileComponent implements OnInit {
 
   saveAvatar() {
     this.cropper.emitImage();
-    this.profileService.saveAvatar(this.base64Image).subscribe({
-      next: () => {
-        this.profileService.profileData.next({ avatar: this.base64Image });
+    this.profileService.saveAvatar(this.base64Image).pipe(
+      withLatestFrom(this.profileService.profileData)
+    ).subscribe({
+      next: ([obj, profile]) => {
+        this.profileService.profileData.next({ ...profile, avatar: this.base64Image });
         this.onHideModal();
       }
     });
@@ -70,9 +72,11 @@ export class ProfileComponent implements OnInit {
 
   saveBackground() {
     this.cropper.emitImage();
-    this.profileService.saveBackground(this.base64Image).subscribe({
-      next: () => {
-        this.profileService.profileData.next({ avatar: this.base64Image });
+    this.profileService.saveBackground(this.base64Image).pipe(
+      withLatestFrom(this.profileService.profileData)
+    ).subscribe({
+      next: ([obj, profile]) => {
+        this.profileService.profileData.next({ ...profile, background: `url(${this.base64Image})` });
         this.onHideModal();
       }
     });
