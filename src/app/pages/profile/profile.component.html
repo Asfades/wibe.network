@@ -1,9 +1,9 @@
 <div
-  *ngIf="$profile | async as profile"
-  [ngClass]="{ 'personal': personalPage | async }"
+  *ngIf="profile$ | async as profile"
+  [ngClass]="{ 'personal': personalPage$ | async }"
 >
   <input #fileInput type="file" (change)="fileChangeEvent($event.target.files[0])" hidden />
-  <div class="profile-background">
+  <div class="profile-header">
     <div
       class="avatar-container"
       (click)="onShowModal($event, profileModals.Avatar)"
@@ -22,7 +22,7 @@
         </ng-container>
       </div>
       <button
-        *ngIf="personalPage | async"
+        *ngIf="personalPage$ | async"
         class="upload-btn"
         mat-button
         (click)="onShowModal($event, profileModals.UploadAvatar)"
@@ -31,16 +31,26 @@
         Upload image
       </button>
     </div>
-    <div class="profile-header">
-      <h1>{{ $username | async }}</h1>
+    <div class="profile-heading">
+      <h1>{{ username$ | async }}</h1>
     </div>
+    <button
+      *ngIf="personalPage$ | async"
+      class="upload-btn"
+      mat-button
+      (click)="onShowModal($event, profileModals.UploadBackground)"
+    >
+      <mat-icon mat-list-icon>camera_alt</mat-icon>
+      Upload image
+    </button>
   </div>
   <ng-container
-    *ngIf="showModal && personalPage | async"
+    *ngIf="showModal && personalPage$ | async"
   >
     <app-modal
-      [title]="$username | async"
+      [title]="username$ | async"
       (hide)="onHideModal()"
+      [width]="modalWidth"
     >
       <ng-container [ngSwitch]="activeModal">
         <div *ngSwitchCase="profileModals.Avatar">
@@ -52,7 +62,8 @@
           >
           <div
             *ngIf="!profile.avatar"
-            style="height: 50px; background: black;">
+            style="height: 50px; background: black;"
+          >
           </div>
         </div>
         <div *ngSwitchCase="profileModals.UploadAvatar">
