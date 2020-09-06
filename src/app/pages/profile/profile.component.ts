@@ -68,6 +68,16 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  saveBackground() {
+    this.cropper.emitImage();
+    this.profileService.saveBackground(this.base64Image).subscribe({
+      next: () => {
+        this.profileService.profileData.next({ avatar: this.base64Image });
+        this.onHideModal();
+      }
+    });
+  }
+
   onShowModal(event: Event, type: ProfileModals) {
     event.stopPropagation();
     this.activeModal = type;

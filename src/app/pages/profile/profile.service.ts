@@ -43,6 +43,17 @@ export class ProfileService {
       }
     });
   }
+
+  saveBackground(base64Image: string) {
+    const data = new FormData();
+    data.set('image', makeblob(base64Image));
+
+    return this.http.post(`http://localhost:3000/users/${this.username}/background`, data, {
+      headers: {
+        'Content-Type': 'application/octet-stream'
+      }
+    });
+  }
 }
 
 
