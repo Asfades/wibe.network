@@ -95,6 +95,35 @@
             </div>
           </div>
         </div>
+        <div *ngSwitchCase="profileModals.UploadBackground">
+          <p>For best results, upload PNG or JPG images of at least 2480x520 pixels. 2MB file-size limit. Avoid using text within your header image, as it will be cropped on smaller screens.</p>
+          <app-image-cropper
+              [imageFile]="originalImageFile"
+              [width]="850"
+              [height]="178"
+              [zoom$]="zoomValue$"
+              (blobImage)="onBlobImage($event)"
+            >
+          </app-image-cropper>
+          <div class="controls">
+            <div class="slider-wrapper">
+              <span>–</span>
+              <mat-slider
+                min="0"
+                step="1"
+                [max]="maxSteps"
+                (input)="onZoomChange($event)"
+              >
+                zoom
+              </mat-slider>
+              <span>+</span>
+            </div>
+            <div>
+              <button mat-button (click)="onHideModal()">Cancel</button>
+              <button mat-flat-button (click)="saveBackground()" color="primary">Save</button>
+            </div>
+          </div>
+        </div>
       </ng-container>
     </app-modal>
   </ng-container>
