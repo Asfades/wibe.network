@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 const usersEndpoint = 'http://localhost:3000/users';
 const avatarsEndpoint = 'http://localhost:3000/users/avatars';
+const backgroundsEndpoint = 'http://localhost:3000/users/backgrounds';
 
 export interface ProfileData {
   avatar: string;
+  background: string;
 }
 
 @Injectable({providedIn: 'root'})
@@ -24,7 +26,8 @@ export class ProfileService {
     return this.http.get<ProfileData>(`${usersEndpoint}/${name}`).pipe(
       map(profile => {
         return {
-          avatar: `${avatarsEndpoint}/${profile.avatar}`
+          avatar: `${avatarsEndpoint}/${profile.avatar}`,
+          background: `url(${backgroundsEndpoint}/${profile.background})` // for background style
         };
       }),
       tap(profile => {

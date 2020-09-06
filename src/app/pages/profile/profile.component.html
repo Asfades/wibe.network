@@ -3,7 +3,12 @@
   [ngClass]="{ 'personal': personalPage$ | async }"
 >
   <input #fileInput type="file" (change)="fileChangeEvent($event.target.files[0])" hidden />
-  <div class="profile-header">
+  <div
+    class="profile-header"
+    [ngStyle]="{
+      'background-image': profile.background
+    }"
+  >
     <div
       class="avatar-container"
       (click)="onShowModal($event, profileModals.Avatar)"
