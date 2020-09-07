@@ -10,9 +10,7 @@ import * as AuthActions from './auth.actions';
 import { User } from '../user.model';
 import { AuthService } from '../auth.service';
 
-const signupAPIURL = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + environment.firebase.apiKey;
-const signinAPIURL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + environment.firebase.apiKey;
-const refreshTokenAPIURL = 'http://localhost:3000/auth/refresh-access-token';
+const { signIn, signUp, refreshAccessToken } = environment.api;
 
 @Injectable()
 export class AuthEffects {
@@ -27,7 +25,7 @@ export class AuthEffects {
   authSignup = this.actions$.pipe(
     ofType(AuthActions.SIGNUP_START),
     switchMap((signupAction: AuthActions.SignupStart) => {
-      return this.http.post<AuthResponseData>('http://localhost:3000/auth/signup', {
+      return this.http.post<AuthResponseData>(signUp, {
         email: signupAction.payload.email,
         username: signupAction.payload.username,
         password: signupAction.payload.password,
@@ -43,7 +41,7 @@ export class AuthEffects {
   authLogin = this.actions$.pipe(
     ofType(AuthActions.LOGIN_START),
     switchMap((signinAction: AuthActions.LoginStart) => {
-      return this.http.post<AuthResponseData>('http://localhost:3000/auth/signin', {
+      return this.http.post<AuthResponseData>(signIn, {
         username: signinAction.payload.username,
         password: signinAction.payload.password,
       }).pipe(
@@ -106,7 +104,7 @@ export class AuthEffects {
         return of({ type: 'DUMMY' });
       }
 
-      return this.http.post<RefreshResponseData>(refreshTokenAPIURL,
+      return this.http.post<RefreshResponseData>(refreshAccessToken,
         {
           username: userData.username,
           refreshToken: userData.refreshToken
@@ -206,7 +204,7 @@ function handleIdTokenRefresh(resData: RefreshResponseData) {
     username: resData.username,
     refreshToken: resData.refreshToken,
     accessToken: resData.accessToken,
-    expirationDate: new Date(),
+    expirationDate,
     redirect: false
   });
 }
