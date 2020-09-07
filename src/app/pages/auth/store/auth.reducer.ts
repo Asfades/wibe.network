@@ -24,10 +24,6 @@ export function authReducer(
         action.payload.refreshToken,
         action.payload.accessToken,
         action.payload.expirationDate
-        // action.payload.email,
-        // action.payload.userId,
-        // action.payload.token,
-        // action.payload.expirationDate
       );
       return {
         ...state,
