@@ -6,15 +6,14 @@ import {
   Input,
   HostListener,
 } from '@angular/core';
-import { Observable, Subject, combineLatest, of } from 'rxjs';
+import { Observable, Subject, combineLatest, of, merge } from 'rxjs';
 import {
   map,
   concatMap,
   shareReplay,
   pairwise,
   withLatestFrom,
-  tap,
-  startWith
+  tap
 } from 'rxjs/operators';
 
 @Component({
@@ -132,31 +131,42 @@ export class ImageCropperComponent implements OnInit {
       map((base64image: ArrayBuffer | string) => `url("${base64image}")`)
     );
 
-    this.backgroundPosition$ = this.cursorPosition$.pipe(
-      pairwise(),
-      map(([previousCoordinates, currentCoordinates]) => {
-        if (!previousCoordinates || !currentCoordinates) {
-          return this.lastPosition;
-        }
+    this.backgroundPosition$ = merge(
+      imageSize$.pipe(
+        map((resolution) => {
+          const x = (this.width - resolution.width) / 2;
+          const y = (this.height - resolution.height) / 2;
 
-        const deltaPosition = new Coordinates(
-          currentCoordinates.x - previousCoordinates.x,
-          currentCoordinates.y - previousCoordinates.y
-        );
+          const coordinates = new Coordinates(x, y);
+          this.lastPosition = coordinates;
 
-        const positionX = this.lastPosition.x + deltaPosition.x;
-        const positionY = this.lastPosition.y + deltaPosition.y;
+          return coordinates;
+        })
+      ),
+      this.cursorPosition$.pipe(
+        pairwise(),
+        map(([previousCoordinates, currentCoordinates]) => {
+          if (!previousCoordinates || !currentCoordinates) {
+            return this.lastPosition;
+          }
 
-        const newCoordinates = new Coordinates(positionX, positionY);
+          const deltaPosition = new Coordinates(
+            currentCoordinates.x - previousCoordinates.x,
+            currentCoordinates.y - previousCoordinates.y
+          );
 
-        return newCoordinates;
-      }),
-      withLatestFrom(imageSize$),
-      map(([coordinates, size]) => {
-        return this.validateBackgroundPosition(coordinates, size);
-      }),
-      startWith(new Coordinates(0, 0)),
-      shareReplay(1)
+          const positionX = this.lastPosition.x + deltaPosition.x;
+          const positionY = this.lastPosition.y + deltaPosition.y;
+
+          const newCoordinates = new Coordinates(positionX, positionY);
+
+          return newCoordinates;
+        }),
+        withLatestFrom(imageSize$),
+        map(([coordinates, size]) => {
+          return this.validateBackgroundPosition(coordinates, size);
+        })
+      )
     );
 
     this.backgroundPositionString$ = this.backgroundPosition$.pipe(
