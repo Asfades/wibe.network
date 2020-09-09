@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { switchMap, catchError, map, tap, withLatestFrom } from 'rxjs/operators';
+import { switchMap, map, withLatestFrom } from 'rxjs/operators';
 
 import { Store, Action } from '@ngrx/store';
 import { Actions, ofType, Effect } from '@ngrx/effects';
@@ -10,9 +10,10 @@ import * as fromApp from '@store/app.reducer';
 import { PlayerService } from '@player/player.service';
 import { HttpClient } from '@angular/common/http';
 import { Track } from '@entities/track.model';
-import { environment } from '@src/environments/environment.prod';
+import { environment } from '@src/environments/environment';
 
 const demoPlaylistURL = 'http://localhost:3000/audio/demo-playlist';
+const audioFilesURL = environment.api.audio.files;
 
 @Injectable()
 export class PlaylistEffects {
@@ -33,7 +34,7 @@ export class PlaylistEffects {
         const prevAvailable = playlistState.trackId > 0;
         const actionsToDispatch: Action[] = [];
         if (track) {
-          this.playerService.setTrack(`http://localhost:3000/audio/files/${track.filename}`);
+          this.playerService.setTrack(`${audioFilesURL}/${track.filename}`);
           actionsToDispatch.push(new playerActions.SetTrack(track));
         }
         if (nextAvailable) {
