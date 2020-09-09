@@ -1,11 +1,17 @@
-<div class="playlist-container">
-  <p class="name">Demo Playlist</p>
-  <app-playlist-item
-    *ngFor="let track of (playlist | async).tracks; let i = index; trackBy: trackByIndex"
-    (click)="chooseTrack(i)"
-    [track]="track"
-    [id]="i + 1"
-    [active]="i === (playlist | async).trackId"
-  >
-  </app-playlist-item>
-</div>
+<ng-container
+  *ngIf="playlist$ | async as playlist"
+>
+  <div class="playlist-container">
+    <p class="name">Demo Playlist</p>
+    <app-playlist-item
+      *ngFor="let track of playlist.tracks; let i = index; trackBy: trackByIndex"
+      (click)="chooseTrack(i)"
+      [track]="track"
+      [id]="i + 1"
+      [active]="i === playlist.trackId"
+    >
+    </app-playlist-item>
+  </div>
+</ng-container>
+
+
