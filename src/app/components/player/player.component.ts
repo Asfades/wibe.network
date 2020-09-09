@@ -1,24 +1,27 @@
-import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription, Subject, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import * as moment from 'moment';
 
 import * as fromApp from '@store/app.reducer';
 import * as fromPlayer from './store/player.reducer';
 import { PlayerService } from './player.service';
+import { tap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit, OnDestroy {
+export class PlayerComponent implements OnInit {
   private sliderChangeVal: number;
   private isPlaying = null;
-  private playerSub: Subscription;
-  player: Observable<fromPlayer.State>;
-  currentTime = 0;
+  player$: Observable<fromPlayer.State>;
+  currentTime$: Observable<{
+    num: number,
+    str: string
+  }>;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -26,13 +29,15 @@ export class PlayerComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.player = this.store.select('player');
-    this.playerSub = this.player.subscribe((state) => {
-      this.isPlaying = state.isPlaying;
-    });
-    this.playerService.timeUpdate$.subscribe(time => {
-      this.currentTime = time;
-    });
+    this.player$ = this.store.select('player').pipe(
+      tap(player => this.isPlaying = player.isPlaying)
+    );
+    this.currentTime$ = this.playerService.timeUpdate$.pipe(
+      map((time: number) => ({
+        num: time,
+        str: this.formatTime(time)
+      }))
+    );
   }
 
   play() {
@@ -81,9 +86,5 @@ export class PlayerComponent implements OnInit, OnDestroy {
     if (event.code === 'Space' && event.target === document.body) {
       event.preventDefault();
     }
-  }
-
-  ngOnDestroy() {
-    this.playerSub.unsubscribe();
   }
 }
