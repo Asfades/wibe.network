@@ -21,7 +21,7 @@
           *ngIf="name"
         >Upload</button>
         <div
-          
+          #profileMenuWrapper
           class="profile-menu-wrapper"
         >
           <button
@@ -37,6 +37,7 @@
             <button
               mat-button
               [routerLink]="name"
+              (click)="closeProfileMenu()"
             >Profile</button>
             <button
               mat-button
