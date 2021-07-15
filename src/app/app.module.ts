@@ -8,8 +8,8 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
-import { MaterialModule } from './modules/material.module';
-import { AppRoutingModule } from './modules/app-routing.module';
+import { MaterialModule } from './theme/material.module';
+import { AppRoutingModule } from './routing/app-routing.module';
 import { environment } from '../environments/environment';
 
 import * as fromApp from './store/app.reducer';
