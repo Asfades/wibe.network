@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from '@src/app/modules/material.module';
+import { MaterialModule } from '@src/app/theme/material.module';
 
 import { UploadComponent } from './upload.component';
 import { DropPlaceComponent } from './drop-place/drop-place.component';

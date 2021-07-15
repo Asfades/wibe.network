@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { CoreModule } from '@src/app/modules/core.module';
+import { CoreModule } from '@src/app/core/core.module';
 import { ActivateProfileGuard } from './activateProfile.guard';
 import { ProfileComponent } from './profile.component';
 import { TracksComponent } from './tracks/tracks.component';
